@@ -10,34 +10,59 @@ import SocialButton from "@/components/common/socialbutton";
 import PasswordInput from "@/components/auth/passwordinput";
 import Input from "@/components/common/input";
 import AuthHeader from "@/components/auth/Header";
+import {useForm} from "react-hook-form";
+import * as yup from "yup"
+
+
+
+//* login schema -> Rules of data using yup
+const userSchema = yup.object({
+    email:yup.string().required("email is required"),
+    password: yup.string().required("password is required")
+})
 
 const LoginForm = () => {
   // const[formdata, setFormData]= useState({
   //     email:'',
   //     password:''
   // })
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+//   const [formData, setFormData] = useState({
+//     email: "",
+//     password: "",
+//   });
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
-  ) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    setFormData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
+const onSubmit = (data:{email:string, password:string})=>{
+    console.log("login Submitted", data)
+}
 
-  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("login submitted", formData);
-  };
+  const {register, watch, handleSubmit} = useForm({
+    defaultValues:{
+        email:"",
+        password:""
+,    }
+  })
+  
+//   const onChange = (
+//     e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
+//   ) => {
+//     const value = e.target.value;
+//     const name = e.target.name;
+//     setFormData((prev) => {
+//       return {
+//         ...prev,
+//         [name]: value,
+//       };
+//     });
+//   };
+
+console.log( "email", watch("email"));
+console.log("Password", watch("password"))
+
+
+//   const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     console.log("login submitted", );
+//   };
   return (
     <div className="flex justify-center min-h-screen min-w-screen bg-pink-50">
       <div className=" relative  shadow-(--shadow-card) rounded-2xl p-20 m-40  bg-bg-card">
@@ -57,15 +82,16 @@ const LoginForm = () => {
           </button>
         </div>
 
-        <form onSubmit={onSubmit} className="flex flex-col">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <Input
             label="Email"
             name="email"
             id="email"
             type="email"
             placeholder="Enter your email"
-            value={formData.email}
-            onChange={onChange}
+            register = {register}
+            // value={formData.email}
+            // onChange={onChange}
             Icon={MdEmail}
           />
 
@@ -73,9 +99,9 @@ const LoginForm = () => {
             label="Password"
             name="password"
             id="password"
+            register={register}
             placeholder="Enter your password"
-            value={formData.password}
-            onChange={onChange}
+     
           />
 
           <div className="flex items-center justify-between mt-4">

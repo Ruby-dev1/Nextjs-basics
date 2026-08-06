@@ -3,14 +3,16 @@
 import React, { FC, useState, ChangeEvent } from "react";
 import { MdLock } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FieldValues, UseFormRegister } from "react-hook-form"; 
 
 interface IProps {
   id: string;
   label: string;
   name: string;
   placeholder: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+//   value: string;
+   register:UseFormRegister<any>
+//   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const PasswordInput: FC<IProps> = ({
@@ -18,8 +20,9 @@ const PasswordInput: FC<IProps> = ({
   label,
   name,
   placeholder,
-  value,
-  onChange,
+  register,
+//   value,
+//   onChange,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -36,12 +39,13 @@ const PasswordInput: FC<IProps> = ({
         <MdLock className="text-xl text-primary" />
 
         <input
+        {... register(name)}
           id={id}
-          name={name}
+        //   name={name}
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}
-          value={value}
-          onChange={onChange}
+        //   value={value}
+        //   onChange={onChange}
           className="mt-2 px-4 py-1.5 outline-none text-sm w-full"
         />
 

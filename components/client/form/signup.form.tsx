@@ -1,73 +1,74 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 
 import Button from "@/components/common/button";
 import Input from "@/components/common/input";
 import PasswordInput from "@/components/auth/passwordinput";
 import SocialButton from "@/components/common/socialbutton";
-import AuthHeader from "@/components/auth/Header";
 
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
+interface SignupFormData {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phone: string;
+}
+
 const SignupForm = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    Phone:" ",
-    confirmPassword: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+  } = useForm<SignupFormData>();
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    console.log("Signup Submitted", formData);
+  const onSubmit = (data: SignupFormData) => {
+    console.log("Signup Submitted", data);
+    reset();
   };
 
   return (
-    <div className="flex justify-center min-h-screen min-w-screen bg-pink-50">
-      <div className="relative shadow-(--shadow-card) rounded-2xl p-20 m-40 bg-bg-card">
+    <div className="flex justify-center items-center min-h-screen bg-pink-50">
+      <div className="relative bg-bg-card shadow-(--shadow-card) rounded-2xl p-10 w-full max-w-lg">
 
-         <div className="  items-center">
-                 <div className=" flex flex-col items-center">
-                   <FaUser className=" text-primary text-6xl p-4 -mt-6 border rounded-full" />
-                   <h1 className=" text-center m-6.25 text-primary text-4xl font-medium font-serif">
-                     <span className="text-black">Create </span> Account
-                   </h1>
-                 </div>
-       
-                 <p className=" text-center -mt-4 tracking-wide text-base text-text-secondary pr-6">
-                Sign up to create your account.
-                 </p>
-                 <button className="absolute  top-3.75  right-5 border-0 w-11 h-8 cursor-pointer rounded-lg bg-primary text-white">
-                   X
-                 </button>
-               </div>
+        {/* Header */}
+        <div className="flex flex-col items-center">
+          <FaUser className="text-primary text-6xl p-4 border rounded-full" />
 
-        <form onSubmit={onSubmit} className="flex flex-col">
+          <h1 className="mt-6 text-4xl font-medium font-serif text-primary">
+            <span className="text-black">Create </span>Account
+          </h1>
 
+          <p className="mt-2 text-center text-base tracking-wide text-text-secondary">
+            Sign up to create your account.
+          </p>
+
+          <button
+            type="button"
+            className="absolute top-4 right-4 w-10 h-10 rounded-lg bg-primary text-white hover:opacity-90"
+          >
+            X
+          </button>
+        </div>
+
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col mt-8"
+        >
           <Input
             label="Full Name"
             id="fullName"
             name="fullName"
             placeholder="John Doe"
-            value={formData.fullName}
-            onChange={onChange}
             Icon={FaUser}
+            register={register}
           />
 
           <Input
@@ -76,9 +77,17 @@ const SignupForm = () => {
             name="email"
             type="email"
             placeholder="Enter your email"
-            value={formData.email}
-            onChange={onChange}
             Icon={MdEmail}
+            register={register}
+          />
+
+          <Input
+            label="Phone"
+            id="phone"
+            name="phone"
+            type="text"
+            placeholder="9844555555"
+            register={register}
           />
 
           <PasswordInput
@@ -86,8 +95,7 @@ const SignupForm = () => {
             id="password"
             name="password"
             placeholder="Enter your password"
-            value={formData.password}
-            onChange={onChange}
+            register={register}
           />
 
           <PasswordInput
@@ -95,38 +103,26 @@ const SignupForm = () => {
             id="confirmPassword"
             name="confirmPassword"
             placeholder="Confirm your password"
-            value={formData.confirmPassword}
-            onChange={onChange}
+            register={register}
           />
-
-             <Input
-            label="Phone"
-            id="Phone"
-            name="Phone"
-            type="text"
-            placeholder="9844051111"
-            value={formData.Phone}
-            onChange={onChange}
-          
-          />
-
-    
 
           <Button
             label="Create Account"
             type="submit"
           />
 
+  
           <div className="flex items-center my-6">
             <div className="flex-1 h-px bg-pink-200"></div>
 
-            <p className="px-4 text-text-secondary text-sm">
+            <p className="px-4 text-sm text-text-secondary">
               or continue with
             </p>
 
             <div className="flex-1 h-px bg-pink-200"></div>
           </div>
 
+    
           <div className="flex gap-4">
             <SocialButton
               label="Google"
@@ -134,14 +130,15 @@ const SignupForm = () => {
             />
 
             <SocialButton
-              label="Github"
+              label="GitHub"
               Icon={FaGithub}
             />
           </div>
 
-          <div className="m-8 flex flex-col items-center">
+          {/* Login Link */}
+          <div className="mt-8 text-center">
             <p className="text-sm text-text-secondary">
-              Already have an account?
+              Already have an account?{" "}
               <Link
                 href="/login"
                 className="text-primary font-semibold hover:underline"
@@ -150,7 +147,6 @@ const SignupForm = () => {
               </Link>
             </p>
           </div>
-
         </form>
       </div>
     </div>
