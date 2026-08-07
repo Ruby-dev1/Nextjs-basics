@@ -5,6 +5,9 @@ interface IProps {
   label: string;
   name: string;
   id: string;
+  error?:string;
+  required?:boolean;
+
 
   type?: "text" | "email" | "password";
   placeholder: string;
@@ -19,39 +22,42 @@ const Input: FC<IProps> = ({
   label,
   name,
   register,
+  required,
  
   placeholder,
+  error,
 
   type = "text",
  
   Icon,
 }) => {
   return (
-    <div className="mt-5">
-      <label
-        htmlFor={id}
-        className="text-medium font-normal font-sans"
-      >
-        {label}
-      </label>
+<div className="mt-5">
+  <label
+    htmlFor={id}
+    className="text-medium font-normal font-sans"
+  >
+    {label}
+  </label>
 
-      <div className="mt-2 flex items-center border border-primary rounded-lg px-4">
-        {Icon && <Icon className="text-xl text-primary" />}
+  <div className="mt-2 flex items-center border border-primary rounded-lg px-4">
+    {Icon && <Icon className="text-xl text-primary" />}
 
-        <input
-        {...register(name)}
-          id={id}
-          // name={name}
-          // type={type}
-          placeholder={placeholder}
-          type={type}
-  
-          // value={value}
-          // onChange={onChange}
-          className="w-full px-4 py-3 text-sm outline-none"
-        />
-      </div>
-    </div>
+    <input
+      {...register(name)}
+      id={id}
+      type={type}
+      placeholder={placeholder}
+      className="w-full px-4 py-3 text-sm outline-none"
+    />
+  </div>
+
+
+    <small className="block mt-1 text-red-500 text-sm">
+      {error}
+    </small>
+
+</div>
   );
 };
 

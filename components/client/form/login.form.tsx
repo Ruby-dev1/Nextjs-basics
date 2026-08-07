@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -12,14 +12,25 @@ import Input from "@/components/common/input";
 import AuthHeader from "@/components/auth/Header";
 import {useForm} from "react-hook-form";
 import * as yup from "yup"
-
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import { TLogin } from '@/types/auth.types';
+// import { TLogin } from "@/types/auth.types";
 
 //* login schema -> Rules of data using yup
-const userSchema = yup.object({
-    email:yup.string().required("email is required"),
-    password: yup.string().required("password is required")
-})
+
+const loginSchema = yup.object({
+  email: yup
+    .string()
+    .email("Invalid email")
+    .required("Email is required"),
+
+  password: yup
+    .string()
+    .required("Password is required"),
+});
+
+
+
 
 const LoginForm = () => {
   // const[formdata, setFormData]= useState({
@@ -31,15 +42,16 @@ const LoginForm = () => {
 //     password: "",
 //   });
 
-const onSubmit = (data:{email:string, password:string})=>{
+const onSubmit = (data:TLogin)=>{
     console.log("login Submitted", data)
 }
 
-  const {register, watch, handleSubmit} = useForm({
+  const {register, watch, handleSubmit, formState:{errors}} = useForm({
     defaultValues:{
         email:"",
         password:""
-,    }
+,    },
+resolver: yupResolver(loginSchema)
   })
   
 //   const onChange = (
@@ -57,6 +69,7 @@ const onSubmit = (data:{email:string, password:string})=>{
 
 console.log( "email", watch("email"));
 console.log("Password", watch("password"))
+console.log(errors);
 
 
 //   const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -82,27 +95,34 @@ console.log("Password", watch("password"))
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-          <Input
-            label="Email"
-            name="email"
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            register = {register}
-            // value={formData.email}
-            // onChange={onChange}
-            Icon={MdEmail}
-          />
+       
+<form
+  onSubmit={handleSubmit(
+    onSubmit,
+    (errors) => {
+      console.log("Validation Errors:", errors);
+    }
+  )}
 
-          <PasswordInput
-            label="Password"
-            name="password"
-            id="password"
-            register={register}
-            placeholder="Enter your password"
-     
-          />
+ className="flex flex-col">
+    <Input
+  label="Email"
+  name="email"
+  id="email"
+  type="email"
+  placeholder="Enter your email"
+  register={register}
+  error={errors.email?.message}
+  Icon={MdEmail}
+/>
+<PasswordInput
+  label="Password"
+  name="password"
+  id="password"
+  placeholder="Enter your password"
+  register={register}
+  error={errors.password?.message}
+/>
 
           <div className="flex items-center justify-between mt-4">
             <div className="flex items-center gap-2">

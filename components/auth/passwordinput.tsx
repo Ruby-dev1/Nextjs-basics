@@ -10,16 +10,20 @@ interface IProps {
   label: string;
   name: string;
   placeholder: string;
+  error?:string;
 //   value: string;
    register:UseFormRegister<any>
+   required?:boolean;
 //   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const PasswordInput: FC<IProps> = ({
   id,
   label,
+  required,
   name,
   placeholder,
+  error,
   register,
 //   value,
 //   onChange,
@@ -60,7 +64,11 @@ const PasswordInput: FC<IProps> = ({
             className="absolute right-4 cursor-pointer text-primary text-lg"
           />
         )}
+  
       </div>
+         <small className="block mt-1 text-red-500 text-sm">
+      {error}
+    </small>
     </div>
   );
 };
