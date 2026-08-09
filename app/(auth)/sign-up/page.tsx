@@ -1,6 +1,8 @@
+
 import { Metadata } from "next";
 import React from "react";
 import SignupForm from "@/components/client/form/signup.form";
+
 
 export const metadata: Metadata = {
   title: "Ecommerce | Sign Up",
@@ -10,7 +12,9 @@ export const metadata: Metadata = {
 const SignUpPage = () => {
   return (
     <main>
+    
       <SignupForm />
+      
     </main>
   );
 };

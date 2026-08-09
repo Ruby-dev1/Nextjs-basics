@@ -12,7 +12,9 @@ import { FaUser, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signupSchema } from "@/schemas/auth.schema";
+import { signupSchema } from "@/schemas/auth.schema"
+import { useMutation } from "@tanstack/react-query";
+import { signup } from "@/api/auth.api";
 
 
 const SignupForm = () => {
@@ -26,8 +28,23 @@ const SignupForm = () => {
 
   const onSubmit = (data: TSignup) => {
     console.log("Signup Submitted", data);
+    mutate(data);
 
   };
+
+ const { mutate, data,error, isPending } = useMutation({
+  mutationFn: signup,
+
+  onSuccess: (data) => {
+    console.log("Signup successful");
+    console.log(data);
+  },
+
+  onError: (error) => {
+    console.log("Signup failed");
+    console.log(error);
+  },
+});
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-pink-50">
@@ -59,14 +76,15 @@ const SignupForm = () => {
           className="flex flex-col mt-8"
         >
           <Input
+
             label="Full Name"
-            id="fullName"
-            name="fullName"
+            id="full_name"
+            name="full_name"
             placeholder="John Doe"
             Icon={FaUser}
             register={register}
             required
-            error= {errors.full_name?.message}
+        error={errors.full_name?.message}
           />
 
           <Input

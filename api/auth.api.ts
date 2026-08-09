@@ -21,7 +21,7 @@ export const login = async (data: TLogin) => {
   }
 };
 
-export const singup = async (data:TSignup)=>{
+export const signup = async (data:TSignup)=>{
     try{
         const response = await axios.post(
             "http://localhost:8080/api/v1/auth/register",
