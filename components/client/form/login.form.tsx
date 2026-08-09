@@ -19,6 +19,7 @@ import { useMutation } from "@tanstack/react-query";
 import { loginSchema } from "@/schemas/auth.schema";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast"
+import { All_Admins } from "@/types/enum.types";
 
 
 //* login schema -> Rules of data using yup
@@ -62,8 +63,13 @@ const { mutate, data, isPending, error } = useMutation({
     // console.log("on success");
     // console.log(data);
     toast.success(data?.message ?? "Login success")
+    if(All_Admins.includes(data.data.role)){
+        router.replace("/admin")
+    } else {   
+         router.replace("/")
+        }
     // router.push()
-    router.replace("/")
+
 
   },
   onError: (error:any) => {
