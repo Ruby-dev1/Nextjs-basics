@@ -17,12 +17,12 @@ const SignupForm = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    formState:{errors},
   } = useForm<Tsignup>();
 
   const onSubmit = (data: Tsignup) => {
     console.log("Signup Submitted", data);
-    reset();
+
   };
 
   return (
@@ -62,6 +62,7 @@ const SignupForm = () => {
             Icon={FaUser}
             register={register}
             required
+            error= {errors.fullName?.message}
           />
 
           <Input
@@ -73,6 +74,7 @@ const SignupForm = () => {
             Icon={MdEmail}
             register={register}
             required
+            error = {errors.email?.message}
           />
 
           <Input
@@ -82,6 +84,7 @@ const SignupForm = () => {
             type="text"
             placeholder="9844555555"
             register={register}
+            error={errors.phone?.message}
         
           />
 
@@ -92,6 +95,7 @@ const SignupForm = () => {
             placeholder="Enter your password"
             register={register}
             required
+            error={errors.password?.message}
           />
 
           <PasswordInput
@@ -101,6 +105,7 @@ const SignupForm = () => {
             placeholder="Confirm your password"
             register={register}
             required
+            error={errors.confirmPassword?.message}
           />
 
           <Button
