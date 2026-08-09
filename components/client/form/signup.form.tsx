@@ -15,9 +15,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "@/schemas/auth.schema"
 import { useMutation } from "@tanstack/react-query";
 import { signup } from "@/api/auth.api";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 
 const SignupForm = () => {
+
+    const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -35,14 +39,17 @@ const SignupForm = () => {
  const { mutate, data,error, isPending } = useMutation({
   mutationFn: signup,
 
-  onSuccess: (data) => {
-    console.log("Signup successful");
-    console.log(data);
+  onSuccess: (response) => {
+    // console.log("Signup successful");
+    // console.log(data);
+    toast.success(response.message ?? "Account created")
+    router.replace("/login");
   },
 
-  onError: (error) => {
-    console.log("Signup failed");
-    console.log(error);
+  onError: (error:any) => {
+    // console.log("Signup failed");
+    // console.log(error);
+    toast.error(error?.message ?? "Request failed")
   },
 });
 

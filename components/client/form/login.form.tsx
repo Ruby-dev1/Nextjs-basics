@@ -17,6 +17,8 @@ import { TLogin } from '@/types/auth.types';
 import { login } from "@/api/auth.api";
 import { useMutation } from "@tanstack/react-query";
 import { loginSchema } from "@/schemas/auth.schema";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast"
 
 
 //* login schema -> Rules of data using yup
@@ -36,14 +38,9 @@ import { loginSchema } from "@/schemas/auth.schema";
 
 
 const LoginForm = () => {
-  // const[formdata, setFormData]= useState({
-  //     email:'',
-  //     password:''
-  // })
-//   const [formData, setFormData] = useState({
-//     email: "",
-//     password: "",
-//   });
+
+
+const router = useRouter()
 
 //* on form submit 
 
@@ -62,11 +59,17 @@ resolver: yupResolver(loginSchema)
 const { mutate, data, isPending, error } = useMutation({
   mutationFn: login,
   onSuccess: (data) => {
-    console.log("on success");
-    console.log(data);
+    // console.log("on success");
+    // console.log(data);
+    toast.success(data?.message ?? "Login success")
+    // router.push()
+    router.replace("/")
+
   },
-  onError: (error) => {
-    console.log("on error");
+  onError: (error:any) => {
+    // toast.error(error?.message ??"Login failed")
+
+    // console.log("on error");
     console.log(error);
   },
 });

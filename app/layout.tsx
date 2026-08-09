@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReactQueryClientProvider from "@/providers/query-client.providers";
-
+import { Toaster } from "react-hot-toast";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,10 +26,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ReactQueryClientProvider>
-             {children}
-
+             {children} 
         </ReactQueryClientProvider>
-        
+         <Toaster/>
      </body>
     </html>
   );
