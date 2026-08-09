@@ -38,6 +38,7 @@ const Input: FC<IProps> = ({
     className="text-medium font-normal font-sans"
   >
     {label}
+    {required&& <span className="text-red-500 ml-1">*</span>}
   </label>
 
   <div className="mt-2 flex items-center border border-primary rounded-lg px-4">

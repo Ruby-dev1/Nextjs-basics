@@ -14,6 +14,8 @@ import {useForm} from "react-hook-form";
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TLogin } from '@/types/auth.types';
+import { login } from "@/api/auth.api";
+import { useMutation } from "@tanstack/react-query";
 // import { TLogin } from "@/types/auth.types";
 
 //* login schema -> Rules of data using yup
@@ -42,9 +44,11 @@ const LoginForm = () => {
 //     password: "",
 //   });
 
-const onSubmit = (data:TLogin)=>{
-    console.log("login Submitted", data)
-}
+//* on form submit 
+
+const onSubmit = (data: TLogin) => {
+  mutate(data);
+};
 
   const {register, watch, handleSubmit, formState:{errors}} = useForm({
     defaultValues:{
@@ -53,6 +57,19 @@ const onSubmit = (data:TLogin)=>{
 ,    },
 resolver: yupResolver(loginSchema)
   })
+
+const { mutate, data, isPending, error } = useMutation({
+  mutationFn: login,
+  onSuccess: (data) => {
+    console.log("on success");
+    console.log(data);
+  },
+  onError: (error) => {
+    console.log("on error");
+    console.log(error);
+  },
+});
+
   
 //   const onChange = (
 //     e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
@@ -67,9 +84,9 @@ resolver: yupResolver(loginSchema)
 //     });
 //   };
 
-console.log( "email", watch("email"));
-console.log("Password", watch("password"))
-console.log(errors);
+// console.log( "email", watch("email"));
+// console.log("Password", watch("password"))
+// console.log(errors);
 
 
 //   const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -114,6 +131,7 @@ console.log(errors);
   register={register}
   error={errors.email?.message}
   Icon={MdEmail}
+  required
 />
 <PasswordInput
   label="Password"
@@ -122,6 +140,7 @@ console.log(errors);
   placeholder="Enter your password"
   register={register}
   error={errors.password?.message}
+  required
 />
 
           <div className="flex items-center justify-between mt-4">
@@ -169,3 +188,8 @@ console.log(errors);
 };
 
 export default LoginForm;
+
+
+//localhost
+
+//protocol; http & https

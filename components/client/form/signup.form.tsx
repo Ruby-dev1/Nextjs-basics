@@ -69,6 +69,7 @@ const SignupForm = () => {
             placeholder="John Doe"
             Icon={FaUser}
             register={register}
+            required
           />
 
           <Input
@@ -79,6 +80,7 @@ const SignupForm = () => {
             placeholder="Enter your email"
             Icon={MdEmail}
             register={register}
+            required
           />
 
           <Input
@@ -88,6 +90,7 @@ const SignupForm = () => {
             type="text"
             placeholder="9844555555"
             register={register}
+        
           />
 
           <PasswordInput
@@ -96,6 +99,7 @@ const SignupForm = () => {
             name="password"
             placeholder="Enter your password"
             register={register}
+            required
           />
 
           <PasswordInput
@@ -104,6 +108,7 @@ const SignupForm = () => {
             name="confirmPassword"
             placeholder="Confirm your password"
             register={register}
+            required
           />
 
           <Button
