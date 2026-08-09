@@ -1,4 +1,4 @@
-import { loginSchema } from "@/schemas/auth.schema";
+import { loginSchema, signupSchema } from "@/schemas/auth.schema";
 import * as yup from "yup";
 
 // export type TLogin = {
@@ -7,3 +7,4 @@ import * as yup from "yup";
 // };
 
 export type TLogin = yup.InferType<typeof loginSchema>;
+export type Tsignup = yup.InferType<typeof signupSchema>;

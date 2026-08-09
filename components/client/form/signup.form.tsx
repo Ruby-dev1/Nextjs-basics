@@ -8,27 +8,19 @@ import Button from "@/components/common/button";
 import Input from "@/components/common/input";
 import PasswordInput from "@/components/auth/passwordinput";
 import SocialButton from "@/components/common/socialbutton";
-
+import { Tsignup } from "@/types/auth.types";
 import { FaUser, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
-
-interface SignupFormData {
-  fullName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  phone: string;
-}
 
 const SignupForm = () => {
   const {
     register,
     handleSubmit,
     reset,
-  } = useForm<SignupFormData>();
+  } = useForm<Tsignup>();
 
-  const onSubmit = (data: SignupFormData) => {
+  const onSubmit = (data: Tsignup) => {
     console.log("Signup Submitted", data);
     reset();
   };
