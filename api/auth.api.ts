@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TLogin } from "@/types/auth.types";
+import { TLogin,TSignup } from "@/types/auth.types";
 
 // Login
 export const login = async (data: TLogin) => {
@@ -20,5 +20,25 @@ export const login = async (data: TLogin) => {
     throw error;
   }
 };
+
+export const singup = async (data:TSignup)=>{
+    try{
+        const response = await axios.post(
+            "http://localhost:8080/api/v1/auth/register",
+            data
+        );
+        console.log(response);
+        return response.data;
+        
+    }
+    catch(error){
+        if(axios.isAxiosError(error)){
+            console.log(error.response?.data);
+            throw error.response?.data
+        }
+        throw error;
+    
+    }
+}
 
 

@@ -7,4 +7,4 @@ import * as yup from "yup";
 // };
 
 export type TLogin = yup.InferType<typeof loginSchema>;
-export type Tsignup = yup.InferType<typeof signupSchema>;
+export type TSignup = yup.InferType<typeof signupSchema>;

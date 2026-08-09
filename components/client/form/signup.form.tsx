@@ -3,24 +3,28 @@
 import React from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-
 import Button from "@/components/common/button";
 import Input from "@/components/common/input";
 import PasswordInput from "@/components/auth/passwordinput";
 import SocialButton from "@/components/common/socialbutton";
-import { Tsignup } from "@/types/auth.types";
+import { TSignup } from "@/types/auth.types";
 import { FaUser, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signupSchema } from "@/schemas/auth.schema";
+
 
 const SignupForm = () => {
   const {
     register,
     handleSubmit,
     formState:{errors},
-  } = useForm<Tsignup>();
+  } = useForm<TSignup>({
+    resolver:yupResolver(signupSchema)
+  });
 
-  const onSubmit = (data: Tsignup) => {
+  const onSubmit = (data: TSignup) => {
     console.log("Signup Submitted", data);
 
   };
@@ -62,7 +66,7 @@ const SignupForm = () => {
             Icon={FaUser}
             register={register}
             required
-            error= {errors.fullName?.message}
+            error= {errors.full_name?.message}
           />
 
           <Input

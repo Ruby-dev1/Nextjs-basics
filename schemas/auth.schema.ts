@@ -10,7 +10,7 @@ export const loginSchema = yup.object({
 //* register/signup  Schema
 
 export const signupSchema = yup.object({
-  fullName:yup
+  full_name:yup
   .string()
   .required("fullName is required"),
 
