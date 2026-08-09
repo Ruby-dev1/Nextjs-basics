@@ -138,7 +138,7 @@ const SignupForm = () => {
           />
 
           <Button
-            label="Create Account"
+            label={isPending? "Creating Account": "Create Account"}
             type="submit"
           />
 
