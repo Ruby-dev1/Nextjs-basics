@@ -16,20 +16,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { TLogin } from '@/types/auth.types';
 import { login } from "@/api/auth.api";
 import { useMutation } from "@tanstack/react-query";
+import { loginSchema } from "@/schemas/auth.schema";
 // import { TLogin } from "@/types/auth.types";
 
 //* login schema -> Rules of data using yup
 
-const loginSchema = yup.object({
-  email: yup
-    .string()
-    .email("Invalid email")
-    .required("Email is required"),
+// const loginSchema = yup.object({
+//   email: yup
+//     .string()
+//     .email("Invalid email")
+//     .required("Email is required"),
 
-  password: yup
-    .string()
-    .required("Password is required"),
-});
+//   password: yup
+//     .string()
+//     .required("Password is required"),
+// });
 
 
 
@@ -153,7 +154,7 @@ const { mutate, data, isPending, error } = useMutation({
               Forgot Password?
             </p>
           </div>
-          <Button label="Login" type="submit" />
+          <Button label={isPending? "Logging in...":"Login"} type="submit" />
 
           <div className="flex items-center my-6">
             <div className="flex-1 h-px bg-pink-200"></div>
