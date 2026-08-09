@@ -1,11 +1,11 @@
 import axios from "axios";
 import { TLogin,TSignup } from "@/types/auth.types";
-
+import api from ".";
 // Login
 export const login = async (data: TLogin) => {
   try {
-    const response = await axios.post(
-      "http://localhost:8080/api/v1/auth/login",
+    const response = await api.post(
+     "/auth/login",
       data
     );
 
