@@ -1,14 +1,16 @@
+import React from "react";
 import Navbar from "@/components/landing/navbar";
-import Hero from "@/components/landing/hero";
 import Footer from "@/components/landing/footer";
 
-const HomePage = () => {
+const Layout = ({
+  children,
+}: Readonly<{ children: React.ReactNode }>) => {
   return (
     <>
       <Navbar />
 
       <main>
-        <Hero />
+        {children}
       </main>
 
       <Footer />
@@ -16,4 +18,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Layout;
