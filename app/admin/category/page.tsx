@@ -1,12 +1,11 @@
-import React from 'react'
-import CategoryForm from '@/components/admin/form/category.form'
+import CategoryForm from "@/components/admin/form/category.form";
 
 const CategoryPage = () => {
   return (
     <main>
-    <CategoryForm/> 
+      <CategoryForm />
     </main>
-  )
-}
+  );
+};
 
-export default CategoryPage
+export default CategoryPage;

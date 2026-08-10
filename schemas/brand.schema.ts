@@ -16,6 +16,6 @@ export const brandSchema = yup.object({
     .required("Description is required"),
 
   logo: yup
-    .mixed()
+    .mixed<FileList>()
     .required("Brand logo is required"),
 });
