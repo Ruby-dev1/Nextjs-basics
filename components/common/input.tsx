@@ -35,7 +35,7 @@ const Input: FC<IProps> = ({
 <div className="mt-5">
   <label
     htmlFor={id}
-    className="text-medium font-normal font-sans"
+    className="text-medium gap-1 font-normal font-sans"
   >
     {label}
     {required&& <span className="text-red-500 ml-1">*</span>}
