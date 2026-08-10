@@ -42,7 +42,9 @@ const ProductForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} 
+    className="w-full max-w-2xl mx-auto p-6 space-y-6"
+    >
 
       <Input
         label="Product Name"
@@ -76,12 +78,55 @@ const ProductForm = () => {
       />
 
       {/* Category */}
+           <Input
+        label="Category"
+        name="Category"
+        id="Category"
+        placeholder="Enter Category"
+        register={register}
+        required
+        error={errors.category?.message}
+      />
 
       {/* Brand */}
+           <Input
+        label="Brand"
+        name="Brand"
+        id="Brand"
+        placeholder="Enter Brand"
+        register={register}
+        required
+        error={errors.brand?.message}
+      />
 
       {/* Cover Image */}
+        <div className="flex flex-col gap-2">
+    <label className="text-medium font-normal font-sans">
+      Cover Image
+    </label>
+
+    <input
+      type="file"
+      {...register("cover_image")}
+      className="w-full border rounded-lg p-2"
+      
+    />
+  </div>
+
 
       {/* Multiple Images */}
+              <div className="flex flex-col gap-2">
+    <label className="text-medium font-normal font-sans">
+       Images
+    </label>
+
+    <input
+      type="file"
+      {...register("images")}
+      className="w-full border rounded-lg p-2"
+      
+    />
+  </div>
 
       <Button
         label={isPending ? "Creating..." : "Create Product"}
