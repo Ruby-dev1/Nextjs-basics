@@ -108,9 +108,10 @@ const ProductForm = () => {
     <input
       type="file"
       {...register("cover_image")}
-      className="w-full border rounded-lg p-2"
+ className="file:mr-4 file:rounded-full file:border-0 file:bg-pink-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-pink hover:file:bg-violet-100 dark:file:bg-primary dark:file:text-violet-100 dark:hover:file:bg-violet-500 ..."
+/>
       
-    />
+    
   </div>
 
 
@@ -124,6 +125,8 @@ const ProductForm = () => {
     
   <input
   type="file"
+   {...register("images")}
+
   className="file:mr-4 file:rounded-full file:border-0 file:bg-pink-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-pink hover:file:bg-violet-100 dark:file:bg-primary dark:file:text-violet-100 dark:hover:file:bg-violet-500 ..."
 />
       
