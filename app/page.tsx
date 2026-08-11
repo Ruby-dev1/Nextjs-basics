@@ -1,6 +1,7 @@
 
 import Hero from "@/components/layout/hero";
 import Footer from "@/components/layout/footer";
+import CategoriesList from "@/components/category";
 
 const HomePage = () => {
   return (
@@ -10,6 +11,7 @@ const HomePage = () => {
       <main>
         <Hero />
       </main>
+      <CategoriesList/>
 
       <Footer />
     </>
