@@ -1,9 +1,9 @@
-
+"use client"
 import React from 'react'
-import { FaChevronDown } from "react-icons/fa";
-import Link from 'next/link';
-import CategoryCard from './card';
-import CategoryList from './list';
+import CategoryCard from './card'
+import { useQuery } from '@tanstack/react-query'
+import { getAllCategories } from '@/api/category.api'
+import { ICategory } from '@/types/category.types'
 
 const categories = [
     { 
@@ -72,36 +72,21 @@ const categories = [
 
     }
 ]
-const CategoriesList = () => {
+
+const CategoryList = () => {
+
+    const {isLoading, data} = useQuery({
+        queryFn: getAllCategories,
+        queryKey:["get-all-category"]
+    })
   return (
-    <section className="px-10 py-10">
-        {/* heading sections */}
-   
-        <header className="flex justify-between">
+  <div className= "grid grid-cols-5 gap-2 mt-5">
 
-            {/* left */}
-            <div>
-                <h3 className=" text-lg font-semibold">Featured Categories</h3>
-                <p className="text-sm text-text-secondary">Discover our featured categories</p>
-            </div>
-            {/* right */}
-            <div>
-                <Link href={"#"}>
-                <div className=" flex items-center gap-1 text-text-secondary font-normal hover:text-primary transition-all duration-200 "> 
-                    <span>Explore More</span>
-                    <FaChevronDown size={15} className= "mt-0.5"/>
-                </div>
-                </Link>
-            </div>
-
-        </header>
-
-{/* list categories */}
-<CategoryList/>
-
-
-       </section>
+    {
+        data?.data?.map((category:ICategory)=><CategoryCard key= {category._id} category={category}/>)
+    }
+</div>
   )
 }
 
-export default CategoriesList
+export default CategoryList

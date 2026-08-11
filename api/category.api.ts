@@ -7,3 +7,15 @@ export const createCategory = async(data: FormData)=>{
     return response.data;
 };
 
+
+//* getAll 
+export const getAllCategories = async()=>{
+
+    try{
+        const response = await api.get("/categories");
+        return response?.data;
+
+    }catch(error:any){
+        throw error?.response?.data
+    }
+}

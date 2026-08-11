@@ -1,16 +1,9 @@
 
 import React from 'react'
 import Image from 'next/image'
+import { ICategory } from '@/types/category.types'
 interface Iprops{
-    category:{
-        _id:string,
-        name:string,
-        image:{
-            path:string,
-            public_id:string,
-        },
-        description?:string
-    }
+    category:ICategory
 }
 
 const CategoryCard = ({category:{name,image,description,_id}}:Iprops) => {
@@ -19,7 +12,7 @@ const CategoryCard = ({category:{name,image,description,_id}}:Iprops) => {
         {/* image */}
    <div className = "h-16  w-16 rounded-sm overflow-clip shrink-0">
     <Image
-    src={image.path}
+    src={"/images/hero.png"}
     alt={name + "-" +"image"}
     className= "h-full  w-full"
     height={500}
