@@ -13,13 +13,9 @@ import LoginForm from "@/components/client/form/login.form";
 const LoginPage = () => {
   return (
    
-      <main className="bg-violet-100 p-5">
+      <main >
         <section>
-          <div className="border-2 pb-5">
-            <h1 className="text-red-500 text-4xl">Login</h1>
-            <p>Welcome Back</p>
-          </div>
-
+          
           <LoginForm />
         </section>
       </main>

@@ -1,7 +1,14 @@
 import React from "react";
-import Image from "next/image";
+import { Great_Vibes } from "next/font/google";
 import Link from "next/link";
 import { FaUser, FaShoppingCart,FaSearch } from "react-icons/fa";
+
+
+  const greatVibes = Great_Vibes({
+    subsets:["latin"],
+    weight:"400",
+    
+  })
 
 const Navbar = () => {
   const navItems = [
@@ -18,12 +25,11 @@ const Navbar = () => {
 
       {/* Logo */}
       <Link href="/">
-        <Image
-          src="/images/logo.png"
-          width={120}
-          height={40}
-          alt="Glowora"
-        />
+     <div>
+       <h2 className={`${greatVibes.className} text-5xl text-primary font-bold` }> Glowora </h2>
+     </div>
+
+   
       </Link>
 
       {/* Nav items */}
