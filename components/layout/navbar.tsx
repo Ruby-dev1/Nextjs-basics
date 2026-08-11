@@ -1,74 +1,68 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { FaUser, FaShoppingCart,FaSearch } from "react-icons/fa";
 
 const Navbar = () => {
+  const navItems = [
+    { label: "Home", route: "/" },
+    { label: "Shop", route: "/products" },
+    { label: "Categories", route: "/categories" },
+    { label: "About Us", route: "/about" },
+    { label: "Blog", route: "/blogs" },
+    { label: "Contact", route: "/contact" },
+  ];
+
   return (
-    <nav className="w-full px-8 py-4 flex items-center justify-between bg-white shadow-sm">
+    <nav className="flex items-center justify-between px-10 py-4">
 
       {/* Logo */}
-      <Link
-        href="/"
-        className="text-2xl font-bold text-primary"
-      >
-        Ecommerce
+      <Link href="/">
+        <Image
+          src="/images/logo.png"
+          width={120}
+          height={40}
+          alt="Glowora"
+        />
       </Link>
 
-      {/* Navigation Links */}
-      <div className="flex items-center gap-8">
-        <Link
-          href="/"
-          className="text-text-primary hover:text-primary transition"
-        >
-          Home
-        </Link>
-
-        <Link
-          href="/product"
-          className="text-text-primary hover:text-primary transition"
-        >
-          Products
-        </Link>
-
-        <Link
-          href="/category"
-          className="text-text-primary hover:text-primary transition"
-        >
-          Categories
-        </Link>
-
-        <Link
-          href="/about"
-          className="text-text-primary hover:text-primary transition"
-        >
-          About
-        </Link>
+      {/* Nav items */}
+      <div className="flex items-center gap-10">
+        {navItems.map((item) => (
+          <Link
+            href={item.route}
+            key={item.route}
+        className="text-sm hover:text-pink-300 hover:underline transition-color"
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
 
-      {/* Right side */}
-      <div className="flex items-center gap-4">
+      {/* icons */}
+<div className="flex items-center gap-4">
 
-        {/* Search */}
-        <button className="px-4 py-2 rounded-lg hover:bg-gray-100">
-          🔍
-        </button>
+<Link  href="/search">
+<FaSearch 
+className=" cursor-pointer hover:text-pink-300 hover:scale-110 transition-all duration-200"
+/>
 
-        {/* Cart */}
-        <Link
-          href="/cart"
-          className="px-4 py-2 rounded-lg hover:bg-gray-100"
-        >
-          🛒
-        </Link>
+</Link>
 
-        {/* Login */}
-        <Link
-          href="/login"
-          className="px-5 py-2 rounded-lg bg-primary text-white hover:opacity-90 transition"
-        >
-          Login
-        </Link>
 
-      </div>
+  <Link href="/login">
+    <FaUser
+      className="cursor-pointer hover:text-pink-300 hover:scale-110 transition-all duration-200"
+    />
+  </Link>
+
+  <Link href="/cart">
+    <FaShoppingCart
+      className="cursor-pointer hover:text-pink-300 hover:scale-110 transition-all duration-200"
+    />
+  </Link>
+
+</div>
 
     </nav>
   );

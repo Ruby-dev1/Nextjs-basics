@@ -55,7 +55,7 @@ const footer = () => {
             {shop.map((item)=>(
               <Link href={item.route}
               key={item.route}
-              className="text-sm cursor-pointer"
+              className="text-sm hover:text-pink-300 hover:underline transition-color"
 
               >
               {item.label}
@@ -79,7 +79,7 @@ const footer = () => {
               <Link 
               href={item.route}
               key={item.route}
-              className="text-sm cursor-pointer"
+            className="text-sm hover:text-pink-300 hover:underline transition-color"
               >
               {item.label}
               </Link>
@@ -98,7 +98,7 @@ const footer = () => {
               <Link
               href={item.route}
               key={item.route} 
-              className="text-sm cursor-pointer"
+           className="text-sm hover:text-pink-300 hover:underline transition-color"
               >
               {item.label}
               </Link>
