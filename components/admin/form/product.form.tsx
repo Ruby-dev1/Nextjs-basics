@@ -38,6 +38,11 @@ const ProductForm = () => {
       formData.append("cover_image", data.cover_image);
     }
 
+     if (data.images) {
+    data.images.forEach((image) => {
+      formData.append("images", image);
+    });
+  }
     mutate(formData);
   };
 

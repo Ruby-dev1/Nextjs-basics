@@ -19,17 +19,24 @@ const CategoryList = () => {
     <>
 
         {/* loading state */}
+             {isLoading && <p>Loading categories...</p>}
 
     {/* !loading && data.data.length==0 -> category not found */}
-  <div className= "grid grid-cols-5 gap-2 mt-5">
+         {!isLoading && data?.data?.categories?.length === 0 && (
+        <p>Category not found.</p>
+      )}
 
-
-    {/* !loading && data.data.length>0 */}
-
-    {
-        data?.data?.categories?.map((category:ICategory)=><CategoryCard key= {category._id} category={category}/>)
-    }
-</div>
+{/* categories found */}
+      {!isLoading && data?.data?.categories?.length > 0 && (
+        <div className="grid grid-cols-5 gap-2 mt-5">
+          {data.data.categories.map((category: ICategory) => (
+            <CategoryCard
+              key={category._id}
+              category={category}
+            />
+          ))}
+        </div>
+      )}
 </>
   )
 }

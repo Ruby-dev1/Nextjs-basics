@@ -7,6 +7,7 @@ export type TProduct = yup.InferType<typeof productSchema>
 export type IProduct = {
     _id:string,
     name:string,
+    price: number;
     cover_image:Image,
     images:Image[],
     description?:string,
