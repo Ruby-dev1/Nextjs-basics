@@ -12,7 +12,7 @@ export const createCategory = async(data: FormData)=>{
 export const getAllCategories = async()=>{
 
     try{
-        const response = await api.get("/categories");
+        const response = await api.get("/category");
         return response?.data;
 
     }catch(error:any){
