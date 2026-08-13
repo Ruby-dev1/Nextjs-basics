@@ -1,6 +1,6 @@
 import api from "."
 
-export const addCart = async(data:{
+export const addToCart = async(data:{
     productId:string;
     quantity:number;
 })=>{
