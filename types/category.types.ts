@@ -7,7 +7,7 @@ export type TCategory = yup.InferType<typeof CategorySchema>
 export type ICategory={
     _id:string,
     name:string,
-    image:Image;
+    logo:Image;
     description?:string
 }
 

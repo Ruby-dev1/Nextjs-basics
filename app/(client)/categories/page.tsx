@@ -1,11 +1,20 @@
-import React from 'react'
+"use client";
 
-const CategoriesPage = () => {
+import React from "react";
+import CategoriesList from "@/components/landing/category";
+
+const CategoryPage = () => {
   return (
-    <div>
-        Categories Page
-    </div>
-  )
-}
+    <section className="px-10 py-10">
+      {/* Heading */}
+      <div>
+        <h1 className="text-2xl font-semibold">All Categories</h1>
+      </div>
 
-export default CategoriesPage
+      {/* All products */}
+      <CategoriesList />
+    </section>
+  );
+};
+
+export default CategoryPage;
