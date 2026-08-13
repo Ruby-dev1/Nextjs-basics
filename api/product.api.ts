@@ -32,3 +32,17 @@ export const getFeaturedProducts = async()=>{
     throw error?.response?.data;
   }
 }
+
+//* get product by id for product detail page
+
+export const getProductById = async(id:string)=>{
+
+  try{
+
+    const response = await api.get(`/product/${id}`)
+    return response?.data;
+
+  } catch(error:any){
+    throw error?.response?.data;
+  }
+}
