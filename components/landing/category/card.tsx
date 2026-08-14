@@ -8,7 +8,7 @@ interface Iprops{
 
 const CategoryCard = ({category:{name,logo,description,_id}}:Iprops) => {
   return (
-    <div className= "flex border border-primary max-w-100 cursor-pointer h-fit gap-2 items-center p-1.5 rounded-md  hover:-translate-y-1 hover:bg-primary-light/60 transition-all duration-300 overflow-clip text-wrap">
+    <div className= "flex  max-w-100 cursor-pointer h-fit gap-2 items-center p-1.5  rounded-full  hover:-translate-y-1 hover:bg-primary-light/60 transition-all duration-300 overflow-clip text-wrap">
         {/* image */}
    <div className = "h-16  w-16 rounded-sm overflow-clip shrink-0">
     <Image

@@ -22,8 +22,9 @@ const ProductActions = ({productId}:Iprops) => {
     mutationFn: addToWishlist,
   });
   return (
-    <div className="mt-8 flex gap-4">
+    <div className="mt-8 flex gap-4 ">
       <Button
+      
         label={isCartPending ? "Adding..." : "Add to Cart"}
         onClick={() =>
           addCart({
@@ -35,6 +36,7 @@ const ProductActions = ({productId}:Iprops) => {
       />
 
       <Button
+    
         label={isWishlistPending ? "Adding..." : "♡ Add to Wishlist"}
         onClick={() => addWishlist({productId})}
         disabled={isWishlistPending}

@@ -30,13 +30,14 @@ export const productSchema = yup.object({
     .required("Brand is required"),
 
   cover_image: yup
-    .mixed()
+    .mixed<FileList>()
     .required("Cover image is required"),
 
-images: yup
-  .array()
-  .of(yup.mixed<File>().required())
-  .required("Product images are required"),
+
+ images: yup
+    .mixed<FileList>()
+    .required("Product images are required"),
+
 
   is_featured: yup
     .boolean()

@@ -3,15 +3,16 @@ import { getProductById } from "@/api/product.api";
 import { TbCurrencyRupeeNepalese } from "react-icons/tb";
 import Image from "next/image";
 import Button from "@/components/common/button";
+import ProductActions from "./product-actions";
 interface Iprops {
   params: Promise<{
-    id: string;
+    _id: string;
   }>;
 }
 
 const ProductDetailPage = async ({ params }: Iprops) => {
-  const { id } = await params;
-  const product = await getProductById(id);
+  const { _id } = await params;
+  const product = await getProductById(_id);
   const productData = product?.data;
 
   return (
@@ -69,32 +70,27 @@ const ProductDetailPage = async ({ params }: Iprops) => {
           </p>
 
           {/* Actions */}
-          <div className="mt-8 flex gap-4">
-
-            <button className="rounded-md bg-primary px-6 py-3 text-white">
-              Add to Cart
-            </button>
-
-            <button className="rounded-md border border-primary px-6 py-3">
-              ♡ Add to Wishlist
-            </button>
-
-          </div>
+  <ProductActions productId={productData._id} />
 
           {/* Product Details */}
+<div className="mt-10">
+            <h2 className="text-xl font-semibold">
+              Product Details
+            </h2>
 
-          <div className="mt-10 ">
-            <h2 className= "text-xl font-semibold "> Product Details</h2>
+            <div className="mt-4 space-y-2 text-sm font-medium">
+              <p>
+                <span>Brand:</span>{" "}
+                {productData?.brand?.name}
+              </p>
 
-            <div className="mt-4 text-sm space-y-2  font-medium ">
-                <p> <span>Brand:</span> {"  "}{productData?.brand?.name}</p>
-
-                <p><span>Category:</span> {" "}{productData?.category?.name}</p>
-
+              <p>
+                <span>Category:</span>{" "}
+                {productData?.category?.name}
+              </p>
             </div>
-
-
           </div>
+
 
         </div>
       </div>

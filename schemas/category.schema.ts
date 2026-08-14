@@ -10,8 +10,8 @@ export const CategorySchema = yup.object({
     .string()
     .required("Description is required")
     .min(25, "Description must be atleast 25 characters long"),
-
-    logo:yup
-    .string()
-    .required("Logo is required")
+    
+logo: yup
+  .mixed<FileList>()
+  .required("Logo is required")
 })

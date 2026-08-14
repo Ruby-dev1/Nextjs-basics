@@ -6,13 +6,12 @@ import { IProduct } from "@/types/product.types"
 import Button from "@/components/common/button"
 
 interface Iprops{
-    product:IProduct
-}
-
+    product:IProduct}
 
 const ProductCard=({product:{name, price,category, brand, cover_image,description,_id}
 
 }:Iprops)=>{
+
 
     return(
         <Link href={`/products/${_id}?q=${name}&d=${description}`}>

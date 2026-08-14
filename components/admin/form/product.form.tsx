@@ -25,31 +25,40 @@ const ProductForm = () => {
     mutationFn: createProduct,
   });
 
-  const onSubmit = (data: TProduct) => {
-    const formData = new FormData();
+const onSubmit = (data: TProduct) => {
+  const formData = new FormData();
 
-    formData.append("name", data.name);
-    formData.append("price", String(data.price));
-    formData.append("description", data.description);
-    formData.append("category", data.category);
-    formData.append("brand", data.brand);
+  formData.append("name", data.name);
+  formData.append("price", String(data.price));
+  formData.append("description", data.description);
+  formData.append("category", data.category);
+  formData.append("brand", data.brand);
+if (data.cover_image && data.cover_image.length > 0) {
+  formData.append("cover_image", data.cover_image[0]);
+}
 
-    if (data.cover_image instanceof File) {
-      formData.append("cover_image", data.cover_image);
-    }
-
-     if (data.images) {
-    data.images.forEach((image) => {
+  if (data.images && data.images.length > 0) {
+    Array.from(data.images).forEach((image) => {
       formData.append("images", image);
     });
   }
-    mutate(formData);
-  };
+
+  mutate(formData);
+};
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} 
-    className="w-full max-w-2xl mx-auto p-6 space-y-6"
-    >
+ <form
+  onSubmit={handleSubmit(
+    (data) => {
+      console.log("SUBMIT SUCCESS:", data);
+      onSubmit(data);
+    },
+    (errors) => {
+      console.log("VALIDATION ERRORS:", errors);
+    }
+  )}
+  className="w-full max-w-2xl mx-auto p-6 space-y-6"
+>
 
       <Input
         label="Product Name"
@@ -73,7 +82,7 @@ const ProductForm = () => {
       />
 
       <Input
-        label="Description"
+        label="description"
         name="description"
         id="description"
         placeholder="Enter description"
@@ -84,9 +93,9 @@ const ProductForm = () => {
 
       {/* Category */}
            <Input
-        label="Category"
-        name="Category"
-        id="Category"
+        label="category"
+        name="category"
+        id="category"
         placeholder="Enter Category"
         register={register}
         required
@@ -95,9 +104,9 @@ const ProductForm = () => {
 
       {/* Brand */}
            <Input
-        label="Brand"
-        name="Brand"
-        id="Brand"
+        label="brand"
+        name="brand"
+        id="brand"
         placeholder="Enter Brand"
         register={register}
         required
@@ -111,8 +120,9 @@ const ProductForm = () => {
     </label>
 
     <input
-      type="file"
-      {...register("cover_image")}
+       type="file"
+  accept="image/*"
+  {...register("cover_image")}
  className="file:mr-4 file:rounded-full file:border-0 file:bg-pink-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-pink hover:file:bg-violet-100 dark:file:bg-primary dark:file:text-violet-100 dark:hover:file:bg-violet-500 ..."
 />
       
@@ -129,9 +139,10 @@ const ProductForm = () => {
   
     
   <input
-  type="file"
-   {...register("images")}
-
+ type="file"
+  accept="image/*"
+  multiple
+  {...register("images")}
   className="file:mr-4 file:rounded-full file:border-0 file:bg-pink-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-pink hover:file:bg-violet-100 dark:file:bg-primary dark:file:text-violet-100 dark:hover:file:bg-violet-500 ..."
 />
       

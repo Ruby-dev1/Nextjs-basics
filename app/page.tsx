@@ -9,8 +9,9 @@ const HomePage = () => {
       <main>
         <Hero />
       </main>
-      <Products />
+    
       <CategoriesList />
+        <Products />
 
       <Footer />
     </>

@@ -18,7 +18,7 @@ const Layout = ({
       <div className="flex flex-1 flex-col">
 
         {/* Header */}
-        <header className="h-16 border rounded-lg  ">
+        <header className="h-16  rounded-lg  ">
           <Header />
         </header>
 

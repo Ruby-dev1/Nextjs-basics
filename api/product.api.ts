@@ -8,16 +8,13 @@ export const createProduct = async (data: FormData) => {
 
 //* get all products
 
-export const getAllProducts = async()=>{
+export const getAllProducts = async () => {
+  const response = await api.get("/product");
 
-  try{
-    const response = await api.get("/product");
-    return response?.data;
+  console.log("RAW API RESPONSE:", response.data);
 
-  }catch(error:any){
-    throw error?.response?.data;
-  }
-}
+  return response.data;
+};
 
 
 //* get featured products

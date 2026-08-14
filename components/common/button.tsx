@@ -5,6 +5,7 @@ interface IProps {
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   disabled?: boolean;
+
 }
 
 const Button = ({
@@ -12,12 +13,14 @@ const Button = ({
   type = "button",
   onClick,
   disabled = false,
+  
 }: IProps) => {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
+
       className="
         w-full
         mt-10

@@ -36,26 +36,15 @@ const {mutate, isPending} = useMutation({
     
 });
 
+const onSubmit = (data: TCategory) => {
+  const formData = new FormData();
 
-const onSubmit = (data:TCategory)=>{
+  formData.append("name", data.name);
+  formData.append("description", data.description);
+  formData.append("logo", data.logo[0]);
 
-    console.log("Category form data", data);
-
-    const formData = new FormData();
-    
-
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    
-
-    if(data.logo && data.logo.length>0){
-        formData.append("logo", data.logo[0]);
-    }
-
-    mutate(formData);
-    
-
-}
+  mutate(formData);
+};
 
   return (
   <form
