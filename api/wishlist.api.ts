@@ -6,7 +6,7 @@ export const addToWishlist = async(data:{productId:string})=>{
     try{
 
         const response = await api.post("/wishlist",data)
-
+return response.data;
     }catch(error:any){
         throw error?.response?.data;
     }
