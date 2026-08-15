@@ -1,4 +1,6 @@
-import React from "react";
+"use client"
+import React ,{useContext} from "react";
+import wishlistContext from "@/contexts/wishlist.context";
 import Image from "next/image";
 import { TbCurrencyRupeeNepalese } from "react-icons/tb";
 import Link from "next/link";
@@ -18,7 +20,9 @@ interface Iprops {
 const ProductCard = ({
   product: { name, price, category, brand, cover_image, description, _id },
 }: Iprops) => {
-  const isAdded = true;
+
+  const {isExists} = useContext(wishlistContext);
+  const isAdded = isExists(_id);
 
   const { mutate: addWishlist, isPending: isWishlistPending } = useMutation({
     mutationFn: addToWishlist,
@@ -33,31 +37,36 @@ const ProductCard = ({
   });
 
   return (
-    <Link href={`/products/${_id}?q=${name}&d=${description}`}>
-      <article className=" cursor-pointer max-w-80  min-h-60 hover:-translate-y-1 hover:scale-105 duration-100  mt-4 ">
-        {/* cover_image */}
-        <div className="relative w-52 overflow-hidden rounded-md">
-          <Image
-            src={cover_image.path}
-            alt={name + "-image"}
-            className="h-full w-full"
-            height={500}
-            width={500}
-          />
 
-          <button
-            type="button"
-            disabled={isWishlistPending}
-            onClick={(e) => {
-         e.stopPropagation()
-              addWishlist({
-                productId: _id,
-              });
-            }}
-            className="absolute  right-1 top-2 rounded-full  p-2 shadow-md"
-          >
-            {isAdded ? <IoMdHeart  size ={20} className="text-primary" /> : <FiHeart className="text-md " />}
-          </button>
+     <article className="group w-full overflow-hidden rounded-xl border border-gray-100 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+        {/* cover_image */}
+<div className="relative aspect-square w-full overflow-hidden rounded-xl bg-gray-50">
+  <Image
+  src={cover_image.path}
+  alt={name + "-image"}
+  fill
+  className="object-cover transition-transform duration-300 group-hover:scale-105"
+/>
+
+         <button
+  type="button"
+  disabled={isWishlistPending}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    addWishlist({
+      productId: _id,
+    });
+  }}
+  className="absolute right-1 top-0 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105"
+>
+  {isAdded ? (
+    <IoMdHeart size={20} className="text-primary" />
+  ) : (
+    <FiHeart size={20} />
+  )}
+</button>
         </div>
 
         {/* name,desc,price, button */}
@@ -76,15 +85,15 @@ const ProductCard = ({
           </div>
 
           <p className="line-clamp-2 text-sm text-gray-500">{description}</p>
-
-          {/* Button */}
-          <div className="-mt-6">
-            {" "}
-            <Button label="View Details" />
-          </div>
+<Link
+  href={`/products/${_id}`}
+  className="mt-4 block w-full rounded-lg bg-primary py-3 text-center font-medium text-white transition hover:opacity-90"
+>
+  View Details
+</Link>
         </div>
       </article>
-    </Link>
+  
   );
 };
 export default ProductCard;
