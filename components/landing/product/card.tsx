@@ -6,10 +6,7 @@ import { TbCurrencyRupeeNepalese } from "react-icons/tb";
 import Link from "next/link";
 import { IProduct } from "@/types/product.types";
 import Button from "@/components/common/button";
-import { useMutation } from "@tanstack/react-query";
 import { FiHeart } from "react-icons/fi";
-import { addToWishlist } from "@/api/wishlist.api";
-import toast from "react-hot-toast";
 import { title } from "process";
 import { IoMdHeart } from "react-icons/io";
 
@@ -21,20 +18,10 @@ const ProductCard = ({
   product: { name, price, category, brand, cover_image, description, _id },
 }: Iprops) => {
 
-  const {isExists} = useContext(wishlistContext);
+  const {addToWishlist, isExists, isLoading } = useContext(wishlistContext);
   const isAdded = isExists(_id);
 
-  const { mutate: addWishlist, isPending: isWishlistPending } = useMutation({
-    mutationFn: addToWishlist,
 
-    onSuccess: (response) => {
-      toast.success(response?.message ?? "Product added to wishlist");
-    },
-
-    onError: (error: any) => {
-      toast.error(error?.message ?? "Failed to add product to wishlist");
-    },
-  });
 
   return (
 
@@ -48,18 +35,18 @@ const ProductCard = ({
   className="object-cover transition-transform duration-300 group-hover:scale-105"
 />
 
-         <button
+<button
   type="button"
-  disabled={isWishlistPending}
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    addWishlist({
-      productId: _id,
-    });
+    if (!isAdded) {
+      addToWishlist(_id);
+    }
   }}
-  className="absolute right-1 top-0 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105"
+  disabled={isLoading}
+  className="absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md"
 >
   {isAdded ? (
     <IoMdHeart size={20} className="text-primary" />

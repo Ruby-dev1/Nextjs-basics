@@ -11,3 +11,13 @@ return response.data;
         throw error?.response?.data;
     }
 }
+
+export const getWishlist = async () => {
+  try {
+    const response = await api.get("/wishlist");
+
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data;
+  }
+};
