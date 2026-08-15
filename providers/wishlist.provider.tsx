@@ -25,14 +25,13 @@ const addToWishlist = async (productId: string) => {
 };
 const removeFromWishlist = async (productId: string) => {
   try {
-    // 1. Remove from backend
     await removeFromWishlistApi(productId);
 
-    // 2. Get updated wishlist
-    const response = await getWishlist();
+    // Remove product from frontend state
+    setWishlist((prev) =>
+      prev.filter((item) => item._id !== productId)
+    );
 
-    // 3. Update frontend state
-    setWishlist(response?.data?.products ?? []);
   } catch (error) {
     console.log("Remove wishlist error:", error);
   }
@@ -71,7 +70,7 @@ const isExists = (productId: string) => {
         value={{
             wishlist,
             addToWishlist,
-            removeFromWishlist:()=>{},
+            removeFromWishlist,
             isExists,
             isLoading: false,
         }}

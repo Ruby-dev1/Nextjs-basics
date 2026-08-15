@@ -2,7 +2,7 @@
 
 import React from "react";
 import ProductCard from "./card";
-
+import ProductSkeleton from "@/components/common/productSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts } from "@/api/product.api";
 import { IProduct } from "@/types/product.types";
@@ -18,7 +18,13 @@ const AllProductList = () => {
   return (
     <>
       {/* Loading state */}
-      {isLoading && <p>Loading products...</p>}
+{isLoading && (
+  <div className="mt-5 grid grid-cols-4 gap-4">
+    {Array.from({ length: 10}).map((_, index) => (
+      <ProductSkeleton key={index} />
+    ))}
+  </div>
+)}
 
       {/* Products not found */}
       {!isLoading && data?.data?.products?.length === 0 && (

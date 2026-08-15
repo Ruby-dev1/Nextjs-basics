@@ -5,6 +5,7 @@ import ProductCard from "./card";
 import { useQuery } from "@tanstack/react-query";
 import { getFeaturedProducts } from "@/api/product.api";
 import { IProduct } from "@/types/product.types";
+import ProductSkeleton from "@/components/common/productSkeleton";
 
 const ProductList = () => {
   const { isLoading, data } = useQuery({
@@ -15,12 +16,18 @@ const ProductList = () => {
   return( 
   <>
   {/* loading state */}
-  {isLoading && <p>Loading products...</p>}
+{isLoading && (
+  <div className="mt-5 grid grid-cols-4 gap-4">
+    {Array.from({ length: 4 }).map((_, index) => (
+      <ProductSkeleton key={index} />
+    ))}
+  </div>
+)}
 
 
 {/* Products not found */}
 
-{!isLoading && data?.data?.products?.length===0 &&(
+{!isLoading && data?.data?.length===0 &&(
     <p> Product not found.</p>
 )}
 
