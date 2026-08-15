@@ -2,7 +2,6 @@ import React from "react";
 import { getProductById } from "@/api/product.api";
 import { TbCurrencyRupeeNepalese } from "react-icons/tb";
 import Image from "next/image";
-import Button from "@/components/common/button";
 import ProductActions from "./product-actions";
 interface Iprops {
   params: Promise<{
