@@ -2,7 +2,8 @@
 import react,{useState,useEffect}from"react";
 import wishlistContext from "@/contexts/wishlist.context"
 import { TWishlist } from "@/types/wishlist.types"
-import { addToWishlist as addToWishlistApi,  getWishlist, } from "@/api/wishlist.api";
+import { addToWishlist as addToWishlistApi,  getWishlist, removeFromWishlist as removeFromWishlistApi, } from "@/api/wishlist.api";
+
 const WishlistProvider = ({children}:{children:React.ReactNode})=>{
 
     // 2. Update frontend state
@@ -20,6 +21,20 @@ const addToWishlist = async (productId: string) => {
     setWishlist(response?.data?.products ?? []);
   } catch (error) {
     console.log("Wishlist error:", error);
+  }
+};
+const removeFromWishlist = async (productId: string) => {
+  try {
+    // 1. Remove from backend
+    await removeFromWishlistApi(productId);
+
+    // 2. Get updated wishlist
+    const response = await getWishlist();
+
+    // 3. Update frontend state
+    setWishlist(response?.data?.products ?? []);
+  } catch (error) {
+    console.log("Remove wishlist error:", error);
   }
 };
 useEffect(() => {

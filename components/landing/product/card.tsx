@@ -18,7 +18,7 @@ const ProductCard = ({
   product: { name, price, category, brand, cover_image, description, _id },
 }: Iprops) => {
 
-  const {addToWishlist, isExists, isLoading } = useContext(wishlistContext);
+  const {addToWishlist, removeFromWishlist, isExists, isLoading } = useContext(wishlistContext);
   const isAdded = isExists(_id);
 
 
@@ -40,10 +40,11 @@ const ProductCard = ({
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    if (!isAdded) {
-      addToWishlist(_id);
-    }
+if (isAdded) {
+  removeFromWishlist(_id);
+} else {
+  addToWishlist(_id);
+}
   }}
   disabled={isLoading}
   className="absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md"

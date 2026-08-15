@@ -21,3 +21,13 @@ export const getWishlist = async () => {
     throw error?.response?.data;
   }
 };
+
+export const removeFromWishlist = async (productId: string) => {
+  try {
+    const response = await api.delete(`/wishlist/${productId}`);
+
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data;
+  }
+};
