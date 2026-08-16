@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-
+import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 interface IProps {
   images: {
     path: string;
@@ -55,7 +56,7 @@ const ProductImageCarousel = ({ images }: IProps) => {
             className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl shadow-md transition hover:bg-white"
             aria-label="Previous image"
           >
-            ←
+            <IoIosArrowBack />
           </button>
         )}
 
@@ -67,7 +68,7 @@ const ProductImageCarousel = ({ images }: IProps) => {
             className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl shadow-md transition hover:bg-white"
             aria-label="Next image"
           >
-            →
+            <IoIosArrowForward />
           </button>
         )}
       </div>

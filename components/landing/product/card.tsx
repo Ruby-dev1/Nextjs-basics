@@ -1,14 +1,11 @@
 "use client"
-import React ,{useContext} from "react";
-import wishlistContext from "@/contexts/wishlist.context";
 import Image from "next/image";
 import { TbCurrencyRupeeNepalese } from "react-icons/tb";
 import Link from "next/link";
 import { IProduct } from "@/types/product.types";
-import Button from "@/components/common/button";
 import { FiHeart } from "react-icons/fi";
-import { title } from "process";
 import { IoMdHeart } from "react-icons/io";
+import { useWishlist } from "@/hooks/wishlist.hook";
 
 interface Iprops {
   product: IProduct;
@@ -18,7 +15,7 @@ const ProductCard = ({
   product: { name, price, category, brand, cover_image, description, _id },
 }: Iprops) => {
 
-  const {addToWishlist, removeFromWishlist, isExists, isLoading } = useContext(wishlistContext);
+  const {addToWishlist, removeFromWishlist, isExists, isLoading } = useWishlist();
   const isAdded = isExists(_id);
 
 
@@ -40,12 +37,15 @@ const ProductCard = ({
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
+    
 if (isAdded) {
   removeFromWishlist(_id);
 } else {
   addToWishlist(_id);
 }
   }}
+
+  title={isExists(_id)? "remove from wishlsit":"add to wishlist"}
   disabled={isLoading}
   className="absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md"
 >

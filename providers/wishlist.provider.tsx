@@ -41,10 +41,7 @@ useEffect(() => {
     try {
       const response = await getWishlist();
 
-   console.log(
-  "ADD WISHLIST RESPONSE:",
-  JSON.stringify(response, null, 2)
-);
+
 console.log("FIRST PRODUCT:", response?.data?.products?.[0]);
       setWishlist(response?.data?.products ?? []);
       

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReactQueryClientProvider from "@/providers/query-client.providers";
 import { Toaster } from "react-hot-toast";
+import Providers from "@/providers";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,9 +26,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ReactQueryClientProvider>
+        <Providers>
              {children} 
-        </ReactQueryClientProvider>
+        </Providers>
          <Toaster/>
      </body>
     </html>
