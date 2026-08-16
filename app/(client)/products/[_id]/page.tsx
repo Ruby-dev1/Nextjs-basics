@@ -1,8 +1,9 @@
 import React from "react";
 import { getProductById } from "@/api/product.api";
 import { TbCurrencyRupeeNepalese } from "react-icons/tb";
-import Image from "next/image";
 import ProductActions from "./product-actions";
+import ProductImageCarousel from "@/components/landing/product/imageCarousel";
+
 interface Iprops {
   params: Promise<{
     _id: string;
@@ -11,47 +12,23 @@ interface Iprops {
 
 const ProductDetailPage = async ({ params }: Iprops) => {
   const { _id } = await params;
+
   const product = await getProductById(_id);
   const productData = product?.data;
 
   return (
-    <section className= "px-10 py-10">
-      <div className=" grid grid-cols-2 gap-10 ">
-        {/* left Images */}
+    <section className="px-10 py-10">
+      <div className="grid grid-cols-2 gap-10">
+
+        {/* LEFT - PRODUCT IMAGES */}
         <div>
-
-          {/* Cover_Image */}
-
-          <div className = "h-125 w-125 overflow-hidden rounded-lg" >
-            <Image
-              src={productData?.cover_image.path}
-              alt={productData?.name}
-              width={500}
-              height={500}
-               className=" h-full  w-full  object-cover"
-            />
-          </div>
-
-          {/* Additional Images */}
-
-          <div  className="mt-4 flex gap-3">
-            {productData?.images?.map(
-              (image: { path: string; public_id: string }) => (
-                <div key={image.public_id}
-                 className="h-26 w-26 overflow-hidden  rounded-lg">
-                  <Image
-                    src={image.path}
-                    alt={productData?.name}
-                    width={100}
-                    height={100}
-                     className="h-full w-full object-cover"
-                  />
-                </div>
-              ),
-            )}
-          </div>
+    <ProductImageCarousel
+  images={[
+    productData.cover_image,
+    ...(productData.images ?? []),
+  ]}
+/>
         </div>
-
 
         {/* RIGHT - PRODUCT INFORMATION */}
         <div className="flex flex-col justify-start pt-8">
@@ -61,7 +38,8 @@ const ProductDetailPage = async ({ params }: Iprops) => {
           </h1>
 
           <p className="mt-3 flex items-center text-xl font-semibold">
-            <TbCurrencyRupeeNepalese/> {productData?.price}
+            <TbCurrencyRupeeNepalese />
+            {productData?.price}
           </p>
 
           <p className="mt-5 leading-6 text-gray-600">
@@ -69,10 +47,10 @@ const ProductDetailPage = async ({ params }: Iprops) => {
           </p>
 
           {/* Actions */}
-  <ProductActions productId={productData._id} />
+          <ProductActions productId={productData._id} />
 
           {/* Product Details */}
-<div className="mt-10">
+          <div className="mt-10">
             <h2 className="text-xl font-semibold">
               Product Details
             </h2>
@@ -89,7 +67,6 @@ const ProductDetailPage = async ({ params }: Iprops) => {
               </p>
             </div>
           </div>
-
 
         </div>
       </div>
