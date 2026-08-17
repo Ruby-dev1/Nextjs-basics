@@ -2,11 +2,13 @@
 import { addProductToWishlist, getWishlist, removeProductFromWishlist } from '@/api/wishlist.api'
 import WishlistContext from '@/contexts/wishlist.context'
 import { TWishlist } from '@/types/wishlist.types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery ,useQueryClient} from '@tanstack/react-query'
 import toast from 'react-hot-toast'
+import { IProduct } from '@/types/product.types'
 
 const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
 
+    const queryClient = useQueryClient()
     const { isLoading, data } = useQuery({
         queryFn: getWishlist,
         queryKey: ['get-wishlist'],
@@ -17,6 +19,10 @@ const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
         mutationFn: addProductToWishlist,
         onSuccess: (response) => {
             toast.success(response.message ?? 'product added to wishlist')
+              queryClient.invalidateQueries({
+            queryKey: ['get-wishlist'],
+        })
+
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (error: any) => {
@@ -28,6 +34,10 @@ const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
         mutationFn: removeProductFromWishlist,
         onSuccess: (response) => {
             toast.success(response.message ?? 'product removed wishlist')
+            
+              queryClient.invalidateQueries({
+            queryKey: ["get-wishlist"],
+        });
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (error: any) => {
@@ -45,11 +55,11 @@ const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
         remove(productId)
     }
 
-    const isExists = (productId: string) => {
-        const list = data?.data.find((list: TWishlist) => list.productId._id === productId)
-        return !!list
-    }
-
+   const isExists = (productId: string) => {
+    return !!data?.data?.products?.some(
+        (product: IProduct) => product._id === productId
+    )
+}
 
 
     return (

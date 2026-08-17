@@ -1,31 +1,23 @@
-import { TWishlist } from "@/types/wishlist.types"
-import { createContext } from "react"
+import { TWishlist } from "@/types/wishlist.types";
+import { createContext } from "react";
 
-//wishlist data -> []
-// add to wishlist ()={}
+type TWishlistContext = {
+    wishlist: TWishlist | null;
+    addToWishlist: (productId: string) => void;
+    removeFromWishlist: (productId: string) => void;
+    isExists: (productId: string) => boolean;
+    isLoading: boolean;
+};
 
-// remove from wishlist ()={}
-// isExists(productId)=> boolean
+const initialValue: TWishlistContext = {
+    wishlist: null,
+    isLoading: false,
 
-type TWishlistContext={
-    wishlist:TWishlist[]|null,
-    addToWishlist:(productId:string)=>void
-    removeFromWishlist:(productId:string)=>void
-    isExists:(productId:string)=>boolean
-    isLoading:boolean
+    addToWishlist: (productId: string) => {},
+    removeFromWishlist: (productId: string) => {},
+    isExists: (productId: string) => false,
+};
 
-}
+const WishlistContext = createContext<TWishlistContext>(initialValue);
 
-const initialValue:TWishlistContext ={
-    wishlist:null,
-     isLoading: false,
-    addToWishlist:(productId:string)=>{},
-   removeFromWishlist :(productId:string)=>{ },
-    isExists:(productId:string)=>false
-   
-
-}
-
-
-const wishlistContext = createContext <TWishlistContext>(initialValue)
-export default wishlistContext;
+export default WishlistContext;

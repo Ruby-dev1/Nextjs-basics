@@ -2,7 +2,9 @@
 import { Image } from "./global.types";
 import { IProduct } from "./product.types";
 import { TUser } from "./user.types";
+
 export type TWishlist={
-    productId:IProduct,
+    products:IProduct[],
     user:TUser
 }
+
