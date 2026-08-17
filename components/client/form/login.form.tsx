@@ -14,12 +14,9 @@ import {useForm} from "react-hook-form";
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TLogin } from '@/types/auth.types';
-import { login } from "@/api/auth.api";
-import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/auth.hook";
 import { loginSchema } from "@/schemas/auth.schema";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast"
-import { All_Admins } from "@/types/enum.types";
+
 
 
 //* login schema -> Rules of data using yup
@@ -40,13 +37,14 @@ import { All_Admins } from "@/types/enum.types";
 
 const LoginForm = () => {
 
+  const{login, isLoading} = useAuth();
 
-const router = useRouter()
+
 
 //* on form submit 
 
 const onSubmit = (data: TLogin) => {
-  mutate(data);
+  login(data);
 };
 
   const {register, watch, handleSubmit, formState:{errors}} = useForm({
@@ -56,29 +54,6 @@ const onSubmit = (data: TLogin) => {
 ,    },
 resolver: yupResolver(loginSchema)
   })
-
-const { mutate, data, isPending, error } = useMutation({
-  mutationFn: login,
-  onSuccess: (data) => {
-    // console.log("on success");
-    // console.log(data);
-    toast.success(data?.message ?? "Login success")
-    if(All_Admins.includes(data.data.role)){
-        router.replace("/admin")
-    } else {   
-         router.replace("/")
-        }
-    // router.push()
-
-
-  },
-  onError: (error:any) => {
-    // toast.error(error?.message ??"Login failed")
-
-    // console.log("on error");
-    console.log(error);
-  },
-});
 
   
 //   const onChange = (
@@ -163,7 +138,10 @@ const { mutate, data, isPending, error } = useMutation({
               Forgot Password?
             </p>
           </div>
-          <Button label={isPending? "Logging in...":"Login"} type="submit" />
+         <Button 
+  label={isLoading ? "Logging in..." : "Login"} 
+  type="submit" 
+/>
 
           <div className="flex items-center my-6">
             <div className="flex-1 h-px bg-pink-200"></div>

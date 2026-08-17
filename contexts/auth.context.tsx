@@ -5,7 +5,7 @@ import { createContext } from "react"
 //
 
 type TauthContext = {
-    user: TUser[]| null,
+    user: TUser| null,
     login:(data:TLogin)=>void
     signup: (data:TSignup)=>void
     logout:()=>void

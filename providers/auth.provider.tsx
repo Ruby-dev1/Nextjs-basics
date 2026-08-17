@@ -2,13 +2,15 @@
 
 import Authcontext from "@/contexts/auth.context";
 import React from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery ,useQueryClient} from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { login } from "@/api/auth.api";
 import { getProfile, logout, } from "@/api/auth.api";
+import { TLogin } from "@/types/auth.types";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const queryClient = useQueryClient();
   const router = useRouter();
 
   // Get logged-in user's profile
@@ -38,43 +40,51 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
 
-  //login Mutation
+  // login Mutation
 
-//   const {mutate:loginMutation} = useMutation({
-//       mutationFn: login,
+  const {mutate:loginMutation,isPending:loginPending} = useMutation({
+    mutationFn:login,
 
-//     onSuccess:(response)=>{
-//         toast.success(response.message?? "Login successfull");
-//         router.replace("/")
-//     },
-//     onError:(error:any)=>{
-//         toast.error(error.message?? "something went wrong");
-//     }
+    onSuccess: (response)=>{
+        toast.success(response.message?? "Login Successful");
 
-    
-//   })
-//   const handlelogin= ()=>{
-//     loginMutation();
-//   }
-  const login = () => {
-    // login logic will be added here
-  };
+        queryClient.invalidateQueries({
+            queryKey:["auth","me"]
+
+        })
+        router.replace("/");
+
+    },
+    onError:(error:any)=>{
+        toast.error(error.message?? "Login Failed")
+    }
+
+  })
+
+  const handlelogin = (data:TLogin)=>{
+    loginMutation(data);
+
+  }
+
+
+
+
+
 
   const signup = () => {
     // signup logic will be added here
   };
 
   return (
-    <Authcontext.Provider
-      value={{
-        isLoading,
-        user: data?.data ?? null,
-
-        login,
-        signup,
-        logout: handleLogout,
-      }}
-    >
+<Authcontext.Provider
+  value={{
+    isLoading: isLoading || loginPending,
+    user: data?.data ?? null,
+    login:handlelogin,
+    signup,
+    logout: handleLogout,
+  }}
+>
       {children}
     </Authcontext.Provider>
   );
