@@ -19,9 +19,9 @@ type TWishlistContext={
 const initialValue:TWishlistContext ={
     wishlist:null,
      isLoading: false,
-    addToWishlist:()=>{},
-   removeFromWishlist :()=>{ },
-    isExists:()=>false
+    addToWishlist:(productId:string)=>{},
+   removeFromWishlist :(productId:string)=>{ },
+    isExists:(productId:string)=>false
    
 
 }

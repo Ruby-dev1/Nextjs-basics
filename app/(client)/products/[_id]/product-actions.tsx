@@ -2,9 +2,9 @@
 
 import React,{useState} from "react";
 import { useMutation } from "@tanstack/react-query";
-
+import { useWishlist } from "@/hooks/wishlist.hook";
 import { addToCart } from "@/api/cart.api";
-import { addToWishlist } from "@/api/wishlist.api";
+
   import { HiHeart } from "react-icons/hi";
 
 
@@ -20,9 +20,8 @@ const [quantity, setQuantity]=useState(1);
   const { mutate: addCart, isPending: isCartPending } = useMutation({
     mutationFn: addToCart,
   });
-  const { mutate: addWishlist, isPending: isWishlistPending } = useMutation({
-    mutationFn: addToWishlist,
-  });
+  const { addToWishlist, isLoading: isWishlistPending } =
+    useWishlist();
 
   return (
 
@@ -80,7 +79,7 @@ const [quantity, setQuantity]=useState(1);
    
       <button
         type="button"
-        onClick={() =>addWishlist({  productId,}) }
+         onClick={() => addToWishlist(productId)}
         disabled={isWishlistPending}
       
   
