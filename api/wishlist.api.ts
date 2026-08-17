@@ -1,6 +1,8 @@
 import api from "."
 
-export const addToWishlist = async(data:{productId:string})=>{
+
+//* add product to wishlist
+export const addProductToWishlist = async(data:{productId:string})=>{
 
 
     try{
@@ -12,6 +14,8 @@ return response.data;
     }
 }
 
+
+//* get wishlist
 export const getWishlist = async () => {
   try {
     const response = await api.get("/wishlist");
@@ -22,7 +26,9 @@ export const getWishlist = async () => {
   }
 };
 
-export const removeFromWishlist = async (productId: string) => {
+//* remove product from wishlist
+
+export const removeProductFromWishlist = async (productId: string) => {
   try {
     const response = await api.delete(`/wishlist/${productId}`);
 

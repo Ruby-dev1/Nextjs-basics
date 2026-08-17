@@ -1,82 +1,69 @@
-"use client"
-import react,{useState,useEffect}from"react";
-import wishlistContext from "@/contexts/wishlist.context"
-import { TWishlist } from "@/types/wishlist.types"
-import { addToWishlist as addToWishlistApi,  getWishlist, removeFromWishlist as removeFromWishlistApi, } from "@/api/wishlist.api";
+'use client'
+import { addProductToWishlist, getWishlist, removeProductFromWishlist } from '@/api/wishlist.api'
+import WishlistContext from '@/contexts/wishlist.context'
+import { TWishlist } from '@/types/wishlist.types'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
-const WishlistProvider = ({children}:{children:React.ReactNode})=>{
+const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
 
-    // 2. Update frontend state
-      const [wishlist, setWishlist]= useState <TWishlist[]>([])
+    const { isLoading, data } = useQuery({
+        queryFn: getWishlist,
+        queryKey: ['get-wishlist'],
+        retry: false,
+    })
 
-const addToWishlist = async (productId: string) => {
-  try {
-    // 1. Add product to backend
-    await addToWishlistApi({ productId });
+    const { mutate: create, isPending: createPending } = useMutation({
+        mutationFn: addProductToWishlist,
+        onSuccess: (response) => {
+            toast.success(response.message ?? 'product added to wishlist')
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+            toast.error(error.message ?? 'something went wrong')
+        },
+    })
 
-    // 2. Get updated wishlist
-    const response = await getWishlist();
-
-    // 3. Update frontend state
-    setWishlist(response?.data?.products ?? []);
-  } catch (error) {
-    console.log("Wishlist error:", error);
-  }
-};
-const removeFromWishlist = async (productId: string) => {
-  try {
-    await removeFromWishlistApi(productId);
-
-    // Remove product from frontend state
-    setWishlist((prev) =>
-      prev.filter((item) => item._id !== productId)
-    );
-
-  } catch (error) {
-    console.log("Remove wishlist error:", error);
-  }
-};
-useEffect(() => {
-  const fetchWishlist = async () => {
-    try {
-      const response = await getWishlist();
+    const { mutate: remove, isPending: removePending } = useMutation({
+        mutationFn: removeProductFromWishlist,
+        onSuccess: (response) => {
+            toast.success(response.message ?? 'product removed wishlist')
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+            toast.error(error.message ?? 'something went wrong')
+        },
+    })
 
 
-console.log("FIRST PRODUCT:", response?.data?.products?.[0]);
-      setWishlist(response?.data?.products ?? []);
-      
-    } catch (error) {
-      console.log("Failed to fetch wishlist:", error);
+
+    const addToWishlist = (productId: string) => {
+       create({ productId })
     }
-    
-  };
 
-  fetchWishlist();
-}, []);
-    // 3. Now isExists() knows it's there
+    const removeFromWishlist = (productId: string) => {
+        remove(productId)
+    }
+
+    const isExists = (productId: string) => {
+        const list = data?.data.find((list: TWishlist) => list.productId._id === productId)
+        return !!list
+    }
 
 
-const isExists = (productId: string) => {
-  return wishlist.some(
-    (item) => item._id === productId
-  );
-};
-    return(
-        <wishlistContext.Provider 
 
-        value={{
-            wishlist,
+    return (
+        <WishlistContext.Provider value={{
+            wishlist: data?.data,
             addToWishlist,
+            isLoading: !!isLoading || !!removePending || !!createPending,
             removeFromWishlist,
             isExists,
-            isLoading: false,
-        }}
-        >
-
+        }}>
             {children}
-        </wishlistContext.Provider>
+
+        </WishlistContext.Provider>
     )
+}
 
-};
-
-export default WishlistProvider;
+export default WishlistProvider

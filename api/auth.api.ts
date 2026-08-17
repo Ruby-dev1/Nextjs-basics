@@ -1,7 +1,7 @@
 import axios from "axios";
 import { TLogin,TSignup } from "@/types/auth.types";
 import api from ".";
-// Login
+//* Login
 export const login = async (data: TLogin) => {
   try {
     const response = await api.post(
@@ -21,10 +21,12 @@ export const login = async (data: TLogin) => {
   }
 };
 
+//* signup 
+
 export const signup = async (data:TSignup)=>{
     try{
         const response = await axios.post(
-            "http://localhost:8080/api/v1/auth/register",
+            "auth/register",
             data
         );
         console.log(response);
@@ -42,3 +44,37 @@ export const signup = async (data:TSignup)=>{
 }
 
 
+//*logout
+export const logout = async () => {
+  try {
+    const response = await api.post("/auth/logout");
+
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.data);
+      throw error.response?.data;
+    }
+
+    throw error;
+  }
+};
+
+
+//*getProfile
+export const getProfile = async () => {
+  try {
+    const response = await api.get("/auth/me");
+
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.data);
+      throw error.response?.data;
+    }
+
+    throw error;
+  }
+};

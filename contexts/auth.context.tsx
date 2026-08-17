@@ -27,5 +27,5 @@ const initialValue:TauthContext ={
    
 
 }
-const authcontext = createContext <TauthContext>(initialValue)
-export default authcontext;
+const Authcontext = createContext <TauthContext>(initialValue)
+export default Authcontext;
