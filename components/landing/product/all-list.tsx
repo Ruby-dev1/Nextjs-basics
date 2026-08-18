@@ -9,7 +9,7 @@ import { IProduct } from "@/types/product.types";
 
 const AllProductList = () => {
   const { isLoading, data } = useQuery({
-    queryFn: getAllProducts,
+queryFn: () => getAllProducts(1),
     queryKey: ["get-all-products"],
   });
 

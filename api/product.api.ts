@@ -8,8 +8,9 @@ export const createProduct = async (data: FormData) => {
 
 //* get all products
 
-export const getAllProducts = async () => {
-  const response = await api.get("/product");
+export const getAllProducts = async (page: number = 1) => {
+  const response = await api.get(`/product?page=${page}`);
+    console.log("REQUESTED PAGE:", page);
 
   console.log("RAW API RESPONSE:", response.data);
 
@@ -52,6 +53,18 @@ export const updateProduct = async (
 ) => {
   try {
     const response = await api.put(`/product/${id}`, data);
+
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data;
+  }
+};
+
+//* Delete product
+
+export const deleteProduct = async (id: string) => {
+  try {
+    const response = await api.delete(`/product/${id}`);
 
     return response.data;
   } catch (error: any) {
