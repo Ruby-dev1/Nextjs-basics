@@ -9,15 +9,27 @@ const WishlistPage = () => {
     const{wishlist, isLoading}= useWishlist();
 
 
-   if (isLoading) {
+//    if (isLoading) {
     
-      <div className="grid grid-cols-1 gap-6 p-10 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, index) => (
-          <WishlistSkeleton key={index} />
-        ))}
-      </div>
+//       <div className="grid grid-cols-1 gap-6 p-10 sm:grid-cols-2 lg:grid-cols-4">
+//         {Array.from({ length: 4 }).map((_, index) => (
+//           <WishlistSkeleton key={index} />
+//         ))}
+//       </div>
    
-  }
+//   }
+
+{isLoading && (
+      <div className="mt-5 grid grid-cols-4 gap-4">
+    {Array.from({ length: 4 }).map((_, index) => (
+      <WishlistSkeleton key={index} />
+    ))}
+  </div>
+)}
+
+
+
+
       const products = wishlist?.products?? [];
 
   return (

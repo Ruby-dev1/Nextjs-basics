@@ -21,7 +21,7 @@ import Link from 'next/link'
       {/* Navbar + Hero content */}
       <div className="relative z-1">
         <Navbar/>
-<div className="flex min-h-[600px] items-center px-10">
+<div className="flex min-h-150 items-center px-10">
   <div className="max-w-lg">
     <h1 className="text-4xl font-semibold font-serif leading-tight">
       REVEAL YOUR <br />

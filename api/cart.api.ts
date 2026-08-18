@@ -12,3 +12,18 @@ export const addToCart = async(data:{
     }
 };
 
+// //* get cart
+
+// export const getCart = async()=>{
+//     try{
+
+//         const response = await api.get("/cart")
+
+//     }catch(error:any){
+//         throw error?.response?.data
+//     }
+// }
+
+
+// //* remove product from cart
+
