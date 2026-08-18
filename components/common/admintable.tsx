@@ -2,33 +2,36 @@
 
 import React from "react";
 
-export type Column<T> = {
+export type TableColumn<T> = {
   key: string;
   label: string;
   render?: (item: T) => React.ReactNode;
 };
 
-type AdminTableProps<T> = {
-  columns: Column<T>[];
+interface TableProps<T> {
+  columns: TableColumn<T>[];
   data: T[];
   isLoading?: boolean;
-};
+  emptyMessage?: string;
+}
 
-const AdminTable = <T,>({
+const Table = <T,>({
   columns,
   data,
   isLoading = false,
-}: AdminTableProps<T>) => {
+  emptyMessage = "No data found.",
+}: TableProps<T>) => {
   return (
-    <div className="overflow-hidden rounded-xl border border-pink-100 bg-white shadow-sm">
+    <div className="w-full overflow-hidden rounded-xl border border-pink-100 bg-white shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[700px]">
+          {/* Header */}
           <thead className="bg-pink-50">
             <tr>
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className="px-5 py-4 text-left font-semibold text-gray-700"
+                  className="px-5 py-4 text-left text-sm font-semibold text-gray-700"
                 >
                   {column.label}
                 </th>
@@ -36,12 +39,13 @@ const AdminTable = <T,>({
             </tr>
           </thead>
 
+          {/* Body */}
           <tbody>
             {isLoading ? (
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="px-5 py-10 text-center text-gray-500"
+                  className="px-5 py-12 text-center text-sm text-gray-500"
                 >
                   Loading...
                 </td>
@@ -50,25 +54,27 @@ const AdminTable = <T,>({
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="px-5 py-10 text-center text-gray-500"
+                  className="px-5 py-12 text-center text-sm text-gray-500"
                 >
-                  No records found.
+                  {emptyMessage}
                 </td>
               </tr>
             ) : (
               data.map((item, index) => (
                 <tr
                   key={index}
-                  className="border-t border-gray-100 hover:bg-pink-50/30"
+                  className="border-t border-gray-100 transition hover:bg-pink-50/30"
                 >
                   {columns.map((column) => (
                     <td
                       key={column.key}
-                      className="px-5 py-4 text-gray-600"
+                      className="px-5 py-4 text-sm text-gray-600"
                     >
                       {column.render
                         ? column.render(item)
-                        : (item as any)[column.key]}
+                        : String(
+                            (item as Record<string, unknown>)[column.key] ?? ""
+                          )}
                     </td>
                   ))}
                 </tr>
@@ -81,4 +87,4 @@ const AdminTable = <T,>({
   );
 };
 
-export default AdminTable;
+export default Table;
