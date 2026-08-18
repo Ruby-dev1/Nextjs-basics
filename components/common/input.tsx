@@ -9,7 +9,7 @@ interface IProps {
   required?:boolean;
 
 
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password"|"number";
   placeholder: string;
   // value: string;
   // onChange: (e: ChangeEvent<HTMLInputElement>) => void;

@@ -16,6 +16,6 @@ export type IProduct = {
     description?:string,
     is_featured:boolean,
     new_arrivals:boolean,
-    
+    stock:number;
 
 }

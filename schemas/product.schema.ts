@@ -14,6 +14,12 @@ export const productSchema = yup.object({
     .positive("Price must be greater than 0")
     .required("Price is required"),
 
+   stock: yup
+  .number()
+  .typeError("Stock must be a number")
+  .required("Stock is required")
+  .min(0, "Stock cannot be negative"),
+
   description: yup
     .string()
     .trim()

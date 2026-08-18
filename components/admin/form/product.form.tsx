@@ -30,6 +30,7 @@ const ProductForm = () => {
 
     formData.append("name", data.name);
     formData.append("price", String(data.price));
+    formData.append("stock", String(data.stock));
     formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("brand", data.brand);
@@ -69,7 +70,7 @@ const ProductForm = () => {
           },
           (errors) => {
             console.log("VALIDATION ERRORS:", errors);
-          }
+          },
         )}
         className="rounded-xl border border-pink-100 bg-white p-6 shadow-sm"
       >
@@ -105,10 +106,21 @@ const ProductForm = () => {
             name="price"
             id="price"
             placeholder="Enter price"
-            type="text"
+            type="number"
             register={register}
             required
             error={errors.price?.message}
+          />
+          {/* stock */}
+          <Input
+            label="Stock"
+            name="stock"
+            id="stock"
+            placeholder="Enter stock quantity"
+            type="number"
+            register={register}
+            required
+            error={errors.stock?.message}
           />
 
           {/* Category */}
@@ -206,7 +218,7 @@ const ProductForm = () => {
             type="submit"
           />
         </div>
-      </form> 
+      </form>
     </section>
   );
 };

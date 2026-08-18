@@ -30,6 +30,7 @@ export const getFeaturedProducts = async()=>{
   }
 }
 
+
 //* get product by id for product detail page
 
 export const getProductById = async(id:string)=>{
@@ -43,3 +44,17 @@ export const getProductById = async(id:string)=>{
     throw error?.response?.data;
   }
 }
+
+//* Update
+export const updateProduct = async (
+  id: string,
+  data: FormData
+) => {
+  try {
+    const response = await api.put(`/product/${id}`, data);
+
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data;
+  }
+};
