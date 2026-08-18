@@ -1,3 +1,4 @@
+"use client"
 import { TWishlist } from "@/types/wishlist.types";
 import { createContext } from "react";
 
