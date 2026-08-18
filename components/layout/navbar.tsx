@@ -1,8 +1,10 @@
+"use client"
 import React from "react";
 import { Great_Vibes } from "next/font/google";
 import Link from "next/link";
-import { FaUser, FaShoppingCart,FaSearch } from "react-icons/fa";
-
+import { FaHeart, FaShoppingCart,FaSearch,FaUser } from "react-icons/fa";
+import { useAuth } from "@/hooks/auth.hook";
+import AuthSection from "../common/authsection";
 
   const greatVibes = Great_Vibes({
     subsets:["latin"],
@@ -11,6 +13,8 @@ import { FaUser, FaShoppingCart,FaSearch } from "react-icons/fa";
   })
 
 const Navbar = () => {
+
+  const {user, logout, isLoading} = useAuth();
   const navItems = [
     { label: "Home", route: "/" },
     { label: "Shop", route: "/products" },
@@ -56,17 +60,36 @@ className=" cursor-pointer hover:text-pink-300 hover:scale-110 transition-all du
 </Link>
 
 
-  <Link href="/login">
-    <FaUser
-      className="cursor-pointer hover:text-pink-300 hover:scale-110 transition-all duration-200"
-    />
-  </Link>
+{!user ? (
+  <>
+    <Link
+      href="/login"
+      className="rounded-lg border border-primary px-4 py-2 text-sm font-medium text-primary transition-all duration-200 hover:bg-primary hover:text-white"
+    >
+      Login
+    </Link>
 
-  <Link href="/cart">
-    <FaShoppingCart
-      className="cursor-pointer hover:text-pink-300 hover:scale-110 transition-all duration-200"
-    />
-  </Link>
+    <Link
+      href="/sign-up"
+      className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:opacity-90"
+    >
+      Signup
+    </Link>
+  </>
+) : (
+  <>
+    <Link href="/wishlist">
+      <FaHeart className="cursor-pointer hover:text-pink-300 hover:scale-110 transition-all duration-200" />
+    </Link>
+
+    <Link href="/cart">
+      <FaShoppingCart className="cursor-pointer hover:text-pink-300 hover:scale-110 transition-all duration-200" />
+    </Link>
+
+
+    <AuthSection />
+  </>
+)}
 
 </div>
 

@@ -25,7 +25,7 @@ export const login = async (data: TLogin) => {
 
 export const signup = async (data:TSignup)=>{
     try{
-        const response = await axios.post(
+        const response = await api.post(
             "auth/register",
             data
         );

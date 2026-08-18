@@ -1,3 +1,4 @@
+"use client"
 import { TLogin, TSignup } from '@/types/auth.types';
 import { TUser } from '@/types/user.types';
 import { createContext } from "react"

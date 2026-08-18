@@ -27,8 +27,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     onSuccess: (response) => {
       toast.success(response.message ?? "Logout successful");
+            queryClient.removeQueries({
+    queryKey: ["auth", "me"],
+  });
       router.replace("/");
     },
+
 
     onError: (error: any) => {
       toast.error(error.message ?? "Something went wrong");
@@ -74,7 +78,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signup = () => {
     // signup logic will be added here
   };
-
+console.log("🔥 LOGGED IN USER:", data?.data);
   return (
 <Authcontext.Provider
   value={{
