@@ -1,7 +1,9 @@
+"use client"
 import React from "react";
 import Sidebar from "@/components/admin/layout/sidebar";
 import Header from "@/components/admin/layout/header";
-
+import { All_Admins } from "@/types/enum.types";
+import WithAuth from "@/hoc/withAuth.hoc";
 
 const Layout = ({
   children,
@@ -33,4 +35,5 @@ const Layout = ({
   );
 };
 
-export default Layout;
+const PrivateLayout = WithAuth(Layout, All_Admins)
+export default PrivateLayout

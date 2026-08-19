@@ -3,6 +3,8 @@ import React from 'react'
 import { useWishlist } from '@/hooks/wishlist.hook'
 import WishlistSkeleton from '@/components/common/wishlist skeleton';
 import ProductCard from '@/components/landing/product/card';
+import WithAuth from '@/hoc/withAuth.hoc';
+import { All_Admins, User_Only } from '@/types/enum.types';
 
 const WishlistPage = () => {
 
@@ -57,4 +59,6 @@ const WishlistPage = () => {
   );
 }
 
-export default WishlistPage
+
+const PrivateWishlist = WithAuth(WishlistPage, User_Only)
+export default PrivateWishlist

@@ -1,4 +1,5 @@
 import { Image } from "./global.types";
+import { Role } from "./enum.types";
 export type TUser={
     
         _id:string,
@@ -7,5 +8,6 @@ export type TUser={
         full_name:string,
         email:string,
         profile_image?:Image;
+        role:Role;
     
 }

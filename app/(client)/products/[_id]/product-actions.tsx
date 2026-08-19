@@ -3,7 +3,7 @@
 import React,{useState} from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useWishlist } from "@/hooks/wishlist.hook";
-import { addToCart } from "@/api/cart.api";
+import { addProductToCart } from "@/api/cart.api";
 
   import { HiHeart } from "react-icons/hi";
 
@@ -18,7 +18,7 @@ const ProductActions = ({ productId }: Iprops) => {
 
 const [quantity, setQuantity]=useState(1);
   const { mutate: addCart, isPending: isCartPending } = useMutation({
-    mutationFn: addToCart,
+    mutationFn: addProductToCart,
   });
   const { addToWishlist, isLoading: isWishlistPending } =
     useWishlist();
