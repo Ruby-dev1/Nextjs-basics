@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaPlus } from "react-icons/fa";
 import DeleteModal from "@/components/admin/common/delete-modal";
-
+import { useRouter } from "next/navigation";
 import Table, {
   TableColumn,
 } from "@/components/admin/common/admintable";
@@ -43,7 +43,7 @@ interface Product {
 }
 const ProductList = () => {
 
-
+const router = useRouter();
   const [page, setPage] = useState(1);
 
 const {
@@ -156,7 +156,7 @@ const [deleteProductItem, setDeleteProductItem] = useState<Product | null>(null)
       render: (product) => (
     <ActionButtons
   onEdit={() => {
-    console.log("Edit product:", product._id);
+router.push(`/admin/product/edit/${product._id}`);
   }}
 onDelete={() => {
   setDeleteProductItem(product);
@@ -183,7 +183,7 @@ onDelete={() => {
         </div>
 
         <Link
-          href="/admin/products/create"
+          href="/admin/product/new"
           className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90"
         >
           <FaPlus size={12} />
