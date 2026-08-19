@@ -3,11 +3,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import Input from "@/components/common/input";
@@ -27,6 +23,7 @@ interface ProductFormProps {
 }
 
 const ProductForm = ({ productId }: ProductFormProps) => {
+  console.log(productId);
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -96,13 +93,8 @@ const ProductForm = ({ productId }: ProductFormProps) => {
   // =========================
 
   const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: FormData;
-    }) => updateProduct(id, data),
+    mutationFn: ({ id, data }: { id: string; data: FormData }) =>
+      updateProduct(id, data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -117,8 +109,7 @@ const ProductForm = ({ productId }: ProductFormProps) => {
     },
   });
 
-  const isPending =
-    createMutation.isPending || updateMutation.isPending;
+  const isPending = createMutation.isPending || updateMutation.isPending;
 
   // =========================
   // Submit
@@ -135,21 +126,12 @@ const ProductForm = ({ productId }: ProductFormProps) => {
     body.append("brand", formData.brand);
 
     // Cover image
-    if (
-      formData.cover_image &&
-      formData.cover_image.length > 0
-    ) {
-      body.append(
-        "cover_image",
-        formData.cover_image[0]
-      );
+    if (formData.cover_image && formData.cover_image.length > 0) {
+      body.append("cover_image", formData.cover_image[0]);
     }
 
     // Additional images
-    if (
-      formData.images &&
-      formData.images.length > 0
-    ) {
+    if (formData.images && formData.images.length > 0) {
       Array.from(formData.images).forEach((image) => {
         body.append("images", image);
       });
@@ -181,23 +163,18 @@ const ProductForm = ({ productId }: ProductFormProps) => {
   if (isEditMode && isLoading) {
     return (
       <div className="p-6">
-        <p className="text-gray-500">
-          Loading product...
-        </p>
+        <p className="text-gray-500">Loading product...</p>
       </div>
     );
   }
 
   return (
     <section className="w-full">
-
       {/* Heading */}
 
       <div className="mb-6 ml-5 mt-18">
         <h2 className="text-xl font-semibold text-text-primary">
-          {isEditMode
-            ? "Edit Product"
-            : "Add New Product"}
+          {isEditMode ? "Edit Product" : "Add New Product"}
         </h2>
 
         <p className="mt-1 text-sm text-gray-500">
@@ -210,18 +187,11 @@ const ProductForm = ({ productId }: ProductFormProps) => {
       {/* Form */}
 
       <form
-        onSubmit={handleSubmit(
-          onSubmit,
-          (errors) => {
-            console.log(
-              "VALIDATION ERRORS:",
-              errors
-            );
-          }
-        )}
+        onSubmit={handleSubmit(onSubmit, (errors) => {
+          console.log("VALIDATION ERRORS:", errors);
+        })}
         className="rounded-xl border border-pink-100 bg-white p-6 shadow-sm"
       >
-
         {/* Product Information */}
 
         <div className="mb-6 border-b border-pink-100 pb-5">
@@ -237,7 +207,6 @@ const ProductForm = ({ productId }: ProductFormProps) => {
         {/* Fields */}
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-
           {/* Name */}
 
           <div className="md:col-span-2">
@@ -315,13 +284,11 @@ const ProductForm = ({ productId }: ProductFormProps) => {
               error={errors.description?.message}
             />
           </div>
-
         </div>
 
         {/* Images */}
 
         <div className="mt-8 border-t border-pink-100 pt-6">
-
           <div className="mb-5">
             <h3 className="text-base font-semibold text-gray-800">
               Product Images
@@ -333,11 +300,9 @@ const ProductForm = ({ productId }: ProductFormProps) => {
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-
             {/* Cover */}
 
             <div className="rounded-xl border border-dashed border-pink-200 bg-pink-50/40 p-5">
-
               <label className="mb-3 block text-sm font-medium text-gray-700">
                 Cover Image
               </label>
@@ -354,13 +319,11 @@ const ProductForm = ({ productId }: ProductFormProps) => {
                   Leave empty to keep the existing cover image.
                 </p>
               )}
-
             </div>
 
             {/* Additional */}
 
             <div className="rounded-xl border border-dashed border-pink-200 bg-pink-50/40 p-5">
-
               <label className="mb-3 block text-sm font-medium text-gray-700">
                 Product Images
               </label>
@@ -378,16 +341,13 @@ const ProductForm = ({ productId }: ProductFormProps) => {
                   Select new images to add more product images.
                 </p>
               )}
-
             </div>
-
           </div>
         </div>
 
         {/* Submit */}
 
         <div className="mt-8 flex justify-end border-t border-pink-100 pt-6">
-
           <Button
             label={
               isPending
@@ -400,9 +360,7 @@ const ProductForm = ({ productId }: ProductFormProps) => {
             }
             type="submit"
           />
-
         </div>
-
       </form>
     </section>
   );

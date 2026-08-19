@@ -6,11 +6,9 @@ interface EditProductPageProps {
   }>;
 }
 
-const EditProductPage = async ({
-  params,
-}: EditProductPageProps) => {
+const EditProductPage = async ({ params }: EditProductPageProps) => {
   const { id } = await params;
-
+  console.log(id);
   return (
     <main>
       <ProductForm productId={id} />

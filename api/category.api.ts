@@ -5,11 +5,6 @@ export const createCategory = async (data: FormData) => {
   return response.data;
 };
 
-export const getAllCategories = async (page = 1) => {
-  const response = await api.get(`/category?page=${page}&limit=10`);
-  return response.data;
-};
-
 export const getCategoryById = async (id: string) => {
   const response = await api.get(`/category/${id}`);
   return response.data;
@@ -28,5 +23,10 @@ export const updateCategory = async ({
 
 export const deleteCategory = async (id: string) => {
   const response = await api.delete(`/category/${id}`);
+  return response.data;
+};
+
+export const getAllCategories = async (page: number = 1) => {
+  const response = await api.get(`/category?page=${page}&limit=10`);
   return response.data;
 };

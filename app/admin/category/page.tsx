@@ -1,9 +1,9 @@
-import CategoryForm from "@/components/admin/form/category.form";
+import CategoryList from "@/components/admin/list/category.list";
 
 const CategoryPage = () => {
   return (
-    <main>
-      <CategoryForm />
+    <main className="mt-10">
+      <CategoryList />
     </main>
   );
 };

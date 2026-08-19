@@ -10,7 +10,7 @@ const CategoryList = () => {
 
    
     const {isLoading, data} = useQuery({
-        queryFn: getAllCategories,
+     queryFn: () => getAllCategories(1),
         queryKey:["get-all-category"]
     })
 
