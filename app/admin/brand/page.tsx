@@ -1,13 +1,11 @@
-import BrandForm from "@/components/admin/form/brand.form";
-
-import React from 'react'
+import BrandList from "@/components/admin/list/brand.list";
 
 const BrandPage = () => {
   return (
-    <main>
-        <BrandForm/>
+    <main className="mt-10">
+      <BrandList />
     </main>
-  )
-}
+  );
+};
 
-export default BrandPage
+export default BrandPage;

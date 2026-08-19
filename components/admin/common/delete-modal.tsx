@@ -75,7 +75,7 @@ const DeleteModal = ({
     type="button"
     onClick={onConfirm}
     disabled={isDeleting}
-    className=" border rounded-lg bg-red-500 px-6 py-2 text-sm font-semibold text-gray "
+    className=" rounded-lg bg-red-300 px-6 py-2 text-sm font-semibold text-gray "
   >
     {isDeleting ? "Deleting..." : "Delete"}
   </button>
