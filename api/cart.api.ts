@@ -62,6 +62,7 @@ export const clearCart = async()=>{
     try{
 
         const response = await api.delete("/cart")
+       return response.data;
 
     }catch(error:any){
         throw error?.response?.data;

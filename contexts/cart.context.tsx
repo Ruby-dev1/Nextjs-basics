@@ -1,26 +1,34 @@
 import { Tcart } from "@/types/cart.types";
-import {createContext}from "react";
+import { createContext } from "react";
 
-type TCartContext={
-    cart: Tcart[]|null,
-    isLoading:boolean,
-    addToCart:(productId:string,quantity:number)=>void
-    removeFromCart:(productId:string,quantity:number)=>void
-    updateCart:(productId:string, quantity:number)=>void
+type TCartContext = {
+  cart: Tcart[] | null;
+  isLoading: boolean;
 
+  addProductToCart: (data: {
+    productId: string;
+    quantity: number;
+  }) => void;
 
-}
+  removeProductFromCart: (productId: string) => void;
 
-const initialValue:TCartContext={
-cart:null,
-isLoading:false,
-addToCart:()=>{},
-removeFromCart:()=>{},
-updateCart:()=>{}
+  updateCart: (data: {
+    productId: string;
+    quantity: number;
+  }) => void;
+};
 
+const initialValue: TCartContext = {
+  cart: null,
+  isLoading: false,
 
-}
+  addProductToCart: () => {},
 
-const cartcontext = createContext<TCartContext>(initialValue)
+  removeProductFromCart: () => {},
 
-export default cartcontext;
+  updateCart: () => {},
+};
+
+const cartContext = createContext<TCartContext>(initialValue);
+
+export default cartContext;

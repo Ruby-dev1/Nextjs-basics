@@ -9,7 +9,7 @@ import {
   clearCart,
 } from "@/api/cart.api";
 
-import cartcontext from "@/contexts/cart.context";
+import cartContext from "@/contexts/cart.context";
 
 import {
   useMutation,
@@ -131,29 +131,23 @@ const CartProvider = ({
       );
     },
   });
+  console.log("🛒 CART RESPONSE:", data);
 
   return (
-    <cartcontext.Provider
-      value={{
-        cart: data?.data,
-        isLoading,
+<cartContext.Provider
+  value={{
+    cart: data?.data?.items ?? [],
+    isLoading,
 
-        addToCart: addMutation.mutate,
-        addToCartPending: addMutation.isPending,
+    addProductToCart: addMutation.mutate,
 
-        removeFromCart: removeMutation.mutate,
-        removeFromCartPending: removeMutation.isPending,
+    removeProductFromCart: removeMutation.mutate,
 
-        updateQuantity: updateQuantityMutation.mutate,
-        updateQuantityPending:
-          updateQuantityMutation.isPending,
-
-        clearCart: clearMutation.mutate,
-        clearCartPending: clearMutation.isPending,
-      }}
-    >
-      {children}
-    </cartcontext.Provider>
+    updateCart: updateQuantityMutation.mutate,
+  }}
+>
+  {children}
+</cartContext.Provider>
   );
 };
 
