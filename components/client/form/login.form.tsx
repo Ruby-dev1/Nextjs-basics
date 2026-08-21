@@ -16,7 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { TLogin } from '@/types/auth.types';
 import { useAuth } from "@/hooks/auth.hook";
 import { loginSchema } from "@/schemas/auth.schema";
-
+import { useRouter } from "next/navigation";
 
 
 //* login schema -> Rules of data using yup
@@ -34,12 +34,11 @@ import { loginSchema } from "@/schemas/auth.schema";
 
 
 
-
 const LoginForm = () => {
 
   const{login, isLoading} = useAuth();
 
-
+const router = useRouter();
 
 //* on form submit 
 
@@ -92,9 +91,13 @@ resolver: yupResolver(loginSchema)
           <p className=" text-center -mt-4 tracking-wide text-base text-text-secondary pr-6">
             Log in to access your account
           </p>
-          <button className="absolute  top-3.75  right-5 border-0 w-11 h-8 cursor-pointer rounded-lg bg-primary text-white">
-            X
-          </button>
+<button
+  type="button"
+  onClick={() => router.back()}
+  className="absolute top-3.75 right-5 h-8 w-11 cursor-pointer rounded-lg bg-primary text-white"
+>
+  X
+</button>
         </div>
 
        
