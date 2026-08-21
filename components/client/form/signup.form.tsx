@@ -71,6 +71,7 @@ const SignupForm = () => {
 
           <button
             type="button"
+            onClick={()=> router.back()}
             className="absolute top-4 right-4 w-10 h-10 rounded-lg bg-primary text-white hover:opacity-90"
           >
             X
