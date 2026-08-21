@@ -1,10 +1,14 @@
+
 "use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import Table, {
   TableColumn,
@@ -13,6 +17,8 @@ import Table, {
 import ActionButtons from "@/components/admin/common/action-buttons";
 import Pagination from "@/components/admin/common/pagination";
 import DeleteModal from "@/components/admin/common/delete-modal";
+import AdminModal from "@/components/admin/modal/admin-modal";
+import CategoryForm from "@/components/admin/form/category.form";
 
 import {
   getAllCategories,
@@ -30,17 +36,26 @@ interface Category {
 }
 
 const CategoryList = () => {
-  const router = useRouter();
-
   const [page, setPage] = useState(1);
 
+  // =========================
+  // Delete Modal State
+  // =========================
+
   const [deleteCategoryItem, setDeleteCategoryItem] =
+    useState<Category | null>(null);
+
+  // =========================
+  // Edit Modal State
+  // =========================
+
+  const [editCategoryItem, setEditCategoryItem] =
     useState<Category | null>(null);
 
   const queryClient = useQueryClient();
 
   // =========================
-  // Get categories
+  // Get Categories
   // =========================
 
   const { data, isLoading } = useQuery({
@@ -52,7 +67,7 @@ const CategoryList = () => {
     data?.data?.categories ?? [];
 
   // =========================
-  // Delete
+  // Delete Category
   // =========================
 
   const deleteMutation = useMutation({
@@ -103,6 +118,10 @@ const CategoryList = () => {
       ),
     },
 
+    // =========================
+    // Description
+    // =========================
+
     {
       key: "description",
       label: "Description",
@@ -114,21 +133,27 @@ const CategoryList = () => {
       ),
     },
 
+    // =========================
+    // Actions
+    // =========================
+
     {
       key: "actions",
       label: "Actions",
 
       render: (category) => (
         <ActionButtons
+
+          // EDIT
           onEdit={() => {
-            router.push(
-              `/admin/category/edit/${category._id}`,
-            );
+            setEditCategoryItem(category);
           }}
 
+          // DELETE
           onDelete={() => {
             setDeleteCategoryItem(category);
           }}
+
         />
       ),
     },
@@ -137,7 +162,9 @@ const CategoryList = () => {
   return (
     <section className="w-full p-6">
 
-      {/* Header */}
+      {/* =========================
+          Header
+      ========================= */}
 
       <div className="mb-6 flex items-center justify-between">
 
@@ -163,7 +190,9 @@ const CategoryList = () => {
 
       </div>
 
-      {/* Table */}
+      {/* =========================
+          Category Table
+      ========================= */}
 
       <Table
         columns={columns}
@@ -172,7 +201,9 @@ const CategoryList = () => {
         emptyMessage="No categories found."
       />
 
-      {/* Pagination */}
+      {/* =========================
+          Pagination
+      ========================= */}
 
       <Pagination
         currentPage={page}
@@ -182,7 +213,34 @@ const CategoryList = () => {
         onPageChange={setPage}
       />
 
-      {/* Delete Modal */}
+      {/* =========================
+          Edit Category Modal
+      ========================= */}
+
+      <AdminModal
+        isOpen={!!editCategoryItem}
+        onClose={() => {
+          setEditCategoryItem(null);
+        }}
+        title="Edit Category"
+      >
+        {editCategoryItem && (
+          <CategoryForm
+            categoryId={editCategoryItem._id}
+            onSuccess={() => {
+              setEditCategoryItem(null);
+
+              queryClient.invalidateQueries({
+                queryKey: ["admin-categories"],
+              });
+            }}
+          />
+        )}
+      </AdminModal>
+
+      {/* =========================
+          Delete Category Modal
+      ========================= */}
 
       <DeleteModal
         isOpen={!!deleteCategoryItem}
@@ -196,7 +254,7 @@ const CategoryList = () => {
         onConfirm={() => {
           if (deleteCategoryItem) {
             deleteMutation.mutate(
-              deleteCategoryItem._id,
+              deleteCategoryItem._id
             );
           }
         }}

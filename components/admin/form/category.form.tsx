@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -19,9 +19,11 @@ import {
 
 interface CategoryFormProps {
   categoryId?: string;
+  onSuccess?: () => void;
 }
 
-const CategoryForm = ({ categoryId }: CategoryFormProps) => {
+const CategoryForm = ({ categoryId, onSuccess }: CategoryFormProps) => {
+  const queryClient = useQueryClient();
   // =========================
   // GET CATEGORY FOR EDIT
   // =========================
@@ -39,6 +41,7 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TCategory>({
     resolver: yupResolver(CategorySchema),
@@ -47,6 +50,15 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
       description: data?.data?.description || "",
     },
   });
+
+  useEffect(() => {
+    if (data?.data) {
+      reset({
+        name: data.data.name,
+        description: data.data.description,
+      });
+    }
+  }, [data, reset]);
 
   // =========================
   // CREATE
@@ -69,13 +81,15 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
   // =========================
   // UPDATE
   // =========================
-
   const updateMutation = useMutation({
     mutationFn: updateCategory,
 
-    onSuccess: (data) => {
-      console.log("Category updated successfully");
-      console.log(data);
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["admin-categories"],
+      });
+
+      onSuccess?.();
     },
 
     onError: (error) => {
@@ -83,7 +97,6 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
       console.log(error);
     },
   });
-
   // =========================
   // SUBMIT
   // =========================
@@ -118,15 +131,10 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
   // =========================
 
   if (categoryId && isLoading) {
-    return (
-      <div className="p-6 text-sm text-gray-500">
-        Loading category...
-      </div>
-    );
+    return <div className="p-6 text-sm text-gray-500">Loading category...</div>;
   }
 
-  const isPending =
-    createMutation.isPending || updateMutation.isPending;
+  const isPending = createMutation.isPending || updateMutation.isPending;
 
   // =========================
   // UI
@@ -134,9 +142,8 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
 
   return (
     <section className="w-full">
-
       {/* Heading */}
-      <div className="mb-6 mt-18 ml-5">
+      <div className="mb-6 ml-4">
         <h2 className="text-xl font-semibold text-text-primary">
           {categoryId ? "Edit Category" : "Add New Category"}
         </h2>
@@ -153,7 +160,6 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
         onSubmit={handleSubmit(onSubmit)}
         className="rounded-xl border border-pink-100 bg-white p-6 shadow-sm"
       >
-
         {/* Section Heading */}
         <div className="mb-6 border-b border-pink-100 pb-5">
           <h3 className="text-base font-semibold text-gray-800">
@@ -234,7 +240,6 @@ const CategoryForm = ({ categoryId }: CategoryFormProps) => {
             type="submit"
           />
         </div>
-
       </form>
     </section>
   );

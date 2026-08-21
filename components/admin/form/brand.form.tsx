@@ -127,7 +127,7 @@ onSuccess: () => {
     <section className="w-full">
 
       {/* Page Heading */}
-      <div className="mb-6 mt-18 ml-5">
+  <div className="mb-6 ml-4">
         <h2 className="text-xl font-semibold text-text-primary">
           {isEditMode ? "Edit Brand" : "Add New Brand"}
         </h2>

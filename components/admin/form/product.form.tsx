@@ -22,26 +22,20 @@ interface ProductFormProps {
   productId?: string;
   onSuccess?: () => void;
 }
-const ProductForm = ({
-  productId,
-  onSuccess,
-}: ProductFormProps)  => {
+const ProductForm = ({ productId, onSuccess }: ProductFormProps) => {
   console.log(productId);
   const router = useRouter();
   const queryClient = useQueryClient();
 
   const isEditMode = !!productId;
 
-
   // Get product for EDIT
-
 
   const { data, isLoading } = useQuery({
     queryKey: ["product", productId],
     queryFn: () => getProductById(productId!),
     enabled: isEditMode,
   });
-
 
   // React Hook Form
 
@@ -54,9 +48,7 @@ const ProductForm = ({
     resolver: yupResolver(productSchema),
   });
 
- 
   // Put existing product data into form
-
 
   useEffect(() => {
     if (isEditMode && data?.data) {
@@ -73,9 +65,7 @@ const ProductForm = ({
     }
   }, [data, isEditMode, reset]);
 
-
   // Create mutation
-
 
   const createMutation = useMutation({
     mutationFn: createProduct,
@@ -89,39 +79,31 @@ const ProductForm = ({
     },
   });
 
-
   // Update mutation
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: FormData }) =>
+      updateProduct(id, data),
 
-const updateMutation = useMutation({
-  mutationFn: ({
-    id,
-    data,
-  }: {
-    id: string;
-    data: FormData;
-  }) => updateProduct(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["admin-products"],
+      });
 
-  onSuccess: () => {
-    queryClient.invalidateQueries({
-      queryKey: ["admin-products"],
-    });
+      queryClient.invalidateQueries({
+        queryKey: ["product", productId],
+      });
 
-    queryClient.invalidateQueries({
-      queryKey: ["product", productId],
-    });
-
-    if (onSuccess) {
-      onSuccess();
-    } else {
-      router.push("/admin/product");
-    }
-  },
-});
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.push("/admin/product");
+      }
+    },
+  });
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   // Submit
-
 
   const onSubmit = (formData: TProduct) => {
     const body = new FormData();
@@ -145,16 +127,13 @@ const updateMutation = useMutation({
       });
     }
 
-
     // CREATE
-   
 
     if (!productId) {
       createMutation.mutate(body);
       return;
     }
 
-    
     // UPDATE
 
     updateMutation.mutate({
@@ -163,9 +142,7 @@ const updateMutation = useMutation({
     });
   };
 
-
   // Loading edit product
-
 
   if (isEditMode && isLoading) {
     return (
@@ -179,7 +156,7 @@ const updateMutation = useMutation({
     <section className="w-full">
       {/* Heading */}
 
-      <div className="mb-6 ml-5 mt-18">
+      <div className="mb-6 ml-4">
         <h2 className="text-xl font-semibold text-text-primary">
           {isEditMode ? "Edit Product" : "Add New Product"}
         </h2>
