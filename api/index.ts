@@ -4,7 +4,7 @@ import axios from "axios";
 //* create axios instance
 
 const api = axios.create({
-    baseURL: "https://express-ts-auth-api.onrender.com/api/v1",
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
 withCredentials:true,
 
 });
