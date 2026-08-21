@@ -20,9 +20,13 @@ import {
 
 interface BrandFormProps {
   brandId?: string;
+  onSuccess?: () => void;
 }
 
-const BrandForm = ({ brandId }: BrandFormProps) => {
+const BrandForm = ({
+  brandId,
+  onSuccess,
+}: BrandFormProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -58,13 +62,17 @@ const BrandForm = ({ brandId }: BrandFormProps) => {
   const createMutation = useMutation({
     mutationFn: createBrand,
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["admin-brands"],
-      });
+onSuccess: () => {
+  queryClient.invalidateQueries({
+    queryKey: ["admin-brands"],
+  });
 
-      router.push("/admin/brand");
-    },
+  if (onSuccess) {
+    onSuccess();
+  } else {
+    router.push("/admin/brand");
+  }
+},
   });
 
   // Update

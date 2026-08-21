@@ -2,9 +2,12 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FaPlus } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 
 import Table, {
   TableColumn,
@@ -13,6 +16,9 @@ import Table, {
 import ActionButtons from "@/components/admin/common/action-buttons";
 import Pagination from "@/components/admin/common/pagination";
 import DeleteModal from "@/components/admin/common/delete-modal";
+
+import AdminModal from "@/components/admin/modal/admin-modal";
+import BrandForm from "@/components/admin/form/brand.form";
 
 import {
   getAllBrands,
@@ -30,12 +36,14 @@ interface Brand {
 }
 
 const BrandList = () => {
-  const router = useRouter();
+
 
   const [page, setPage] = useState(1);
   const [deleteBrandItem, setDeleteBrandItem] =
     useState<Brand | null>(null);
 
+const [editBrandId, setEditBrandId] =
+  useState<string | null>(null);
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -101,9 +109,9 @@ const BrandList = () => {
       label: "Actions",
       render: (brand) => (
         <ActionButtons
-          onEdit={() => {
-            router.push(`/admin/brand/edit/${brand._id}`);
-          }}
+   onEdit={() => {
+  setEditBrandId(brand._id);
+}}
           onDelete={() => {
             setDeleteBrandItem(brand);
           }}
@@ -167,6 +175,17 @@ const BrandList = () => {
           }
         }}
       />
+{/* Edit Modal */}
+<AdminModal
+  isOpen={!!editBrandId}
+  title="Edit Brand"
+  onClose={() => setEditBrandId(null)}
+>
+  <BrandForm
+    brandId={editBrandId!}
+    onSuccess={() => setEditBrandId(null)}
+  />
+</AdminModal>
 
     </section>
   );
