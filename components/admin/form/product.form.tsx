@@ -20,18 +20,21 @@ import { TProduct } from "@/types/product.types";
 
 interface ProductFormProps {
   productId?: string;
+  onSuccess?: () => void;
 }
-
-const ProductForm = ({ productId }: ProductFormProps) => {
+const ProductForm = ({
+  productId,
+  onSuccess,
+}: ProductFormProps)  => {
   console.log(productId);
   const router = useRouter();
   const queryClient = useQueryClient();
 
   const isEditMode = !!productId;
 
-  // =========================
+
   // Get product for EDIT
-  // =========================
+
 
   const { data, isLoading } = useQuery({
     queryKey: ["product", productId],
@@ -39,9 +42,8 @@ const ProductForm = ({ productId }: ProductFormProps) => {
     enabled: isEditMode,
   });
 
-  // =========================
+
   // React Hook Form
-  // =========================
 
   const {
     register,
@@ -52,10 +54,9 @@ const ProductForm = ({ productId }: ProductFormProps) => {
     resolver: yupResolver(productSchema),
   });
 
-  // =========================
-  // Put existing product
-  // data into form
-  // =========================
+ 
+  // Put existing product data into form
+
 
   useEffect(() => {
     if (isEditMode && data?.data) {
@@ -72,9 +73,9 @@ const ProductForm = ({ productId }: ProductFormProps) => {
     }
   }, [data, isEditMode, reset]);
 
-  // =========================
+
   // Create mutation
-  // =========================
+
 
   const createMutation = useMutation({
     mutationFn: createProduct,
@@ -88,32 +89,39 @@ const ProductForm = ({ productId }: ProductFormProps) => {
     },
   });
 
-  // =========================
+
   // Update mutation
-  // =========================
 
-  const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: FormData }) =>
-      updateProduct(id, data),
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["admin-products"],
-      });
+const updateMutation = useMutation({
+  mutationFn: ({
+    id,
+    data,
+  }: {
+    id: string;
+    data: FormData;
+  }) => updateProduct(id, data),
 
-      queryClient.invalidateQueries({
-        queryKey: ["product", productId],
-      });
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: ["admin-products"],
+    });
 
+    queryClient.invalidateQueries({
+      queryKey: ["product", productId],
+    });
+
+    if (onSuccess) {
+      onSuccess();
+    } else {
       router.push("/admin/product");
-    },
-  });
-
+    }
+  },
+});
   const isPending = createMutation.isPending || updateMutation.isPending;
 
-  // =========================
   // Submit
-  // =========================
+
 
   const onSubmit = (formData: TProduct) => {
     const body = new FormData();
@@ -137,18 +145,17 @@ const ProductForm = ({ productId }: ProductFormProps) => {
       });
     }
 
-    // =========================
+
     // CREATE
-    // =========================
+   
 
     if (!productId) {
       createMutation.mutate(body);
       return;
     }
 
-    // =========================
+    
     // UPDATE
-    // =========================
 
     updateMutation.mutate({
       id: productId,
@@ -156,9 +163,9 @@ const ProductForm = ({ productId }: ProductFormProps) => {
     });
   };
 
-  // =========================
+
   // Loading edit product
-  // =========================
+
 
   if (isEditMode && isLoading) {
     return (

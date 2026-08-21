@@ -2,20 +2,27 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FaPlus } from "react-icons/fa";
+
 import DeleteModal from "@/components/admin/common/delete-modal";
-import { useRouter } from "next/navigation";
 import Table, {
   TableColumn,
 } from "@/components/admin/common/admintable";
-
 import ActionButtons from "@/components/admin/common/action-buttons";
-
-
 import Pagination from "@/components/admin/common/pagination";
 
-import {deleteProduct, getAllProducts } from "@/api/product.api";
+import AdminModal from "@/components/admin/modal/admin-modal";
+import ProductForm from "@/components/admin/form/product.form";
+
+import {
+  deleteProduct,
+  getAllProducts,
+} from "@/api/product.api";
 
 interface Product {
   _id: string;
@@ -41,40 +48,57 @@ interface Product {
 
   is_featured?: boolean;
 }
-const ProductList = () => {
 
-const router = useRouter();
+const ProductList = () => {
+  const queryClient = useQueryClient();
+
   const [page, setPage] = useState(1);
 
-const {
-  data,
-  isLoading,
-} = useQuery({
-  queryKey: ["admin-products", page],
-  queryFn: () => getAllProducts(page),
-});
+  // Delete modal state
+  const [deleteProductItem, setDeleteProductItem] =
+    useState<Product | null>(null);
 
+  // Edit modal state
+  const [editProductId, setEditProductId] =
+    useState<string | null>(null);
 
-  const products: Product[] = data?.data?.products ?? [];
+  // =========================
+  // GET PRODUCTS
+  // =========================
 
-const queryClient = useQueryClient();
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-products", page],
+    queryFn: () => getAllProducts(page),
+  });
 
-const deleteMutation = useMutation({
-  mutationFn: deleteProduct,
+  const products: Product[] =
+    data?.data?.products ?? [];
 
-  onSuccess: () => {
-    queryClient.invalidateQueries({
-      queryKey: ["admin-products"],
-    });
+  // =========================
+  // DELETE PRODUCT
+  // =========================
 
-    setDeleteProductItem(null);
-  },
-});
-const [deleteProductItem, setDeleteProductItem] = useState<Product | null>(null);
+  const deleteMutation = useMutation({
+    mutationFn: deleteProduct,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["admin-products"],
+      });
+
+      setDeleteProductItem(null);
+    },
+  });
+
+  // =========================
+  // TABLE COLUMNS
+  // =========================
+
   const columns: TableColumn<Product>[] = [
     {
       key: "name",
       label: "Product",
+
       render: (product) => (
         <div className="flex items-center gap-3">
 
@@ -105,6 +129,7 @@ const [deleteProductItem, setDeleteProductItem] = useState<Product | null>(null)
     {
       key: "brand",
       label: "Brand",
+
       render: (product) => (
         <span>
           {product.brand?.name || "N/A"}
@@ -115,6 +140,7 @@ const [deleteProductItem, setDeleteProductItem] = useState<Product | null>(null)
     {
       key: "category",
       label: "Category",
+
       render: (product) => (
         <span>
           {product.category?.name || "N/A"}
@@ -125,6 +151,7 @@ const [deleteProductItem, setDeleteProductItem] = useState<Product | null>(null)
     {
       key: "price",
       label: "Price",
+
       render: (product) => (
         <span className="font-medium text-gray-800">
           Rs. {product.price}
@@ -135,6 +162,7 @@ const [deleteProductItem, setDeleteProductItem] = useState<Product | null>(null)
     {
       key: "stock",
       label: "Stock",
+
       render: (product) => (
         <span
           className={
@@ -150,26 +178,38 @@ const [deleteProductItem, setDeleteProductItem] = useState<Product | null>(null)
       ),
     },
 
+    // =========================
+    // ACTIONS
+    // =========================
+
     {
       key: "actions",
       label: "Actions",
+
       render: (product) => (
-    <ActionButtons
-  onEdit={() => {
-router.push(`/admin/product/edit/${product._id}`);
-  }}
-onDelete={() => {
-  setDeleteProductItem(product);
-}}
-/>
+        <ActionButtons
+
+          // EDIT
+          onEdit={() => {
+            setEditProductId(product._id);
+          }}
+
+          // DELETE
+          onDelete={() => {
+            setDeleteProductItem(product);
+          }}
+        />
       ),
     },
   ];
-  console.log("PAGINATION:", data?.data?.pagination);
-    return (
+
+  return (
     <section className="w-full p-6">
 
-      {/* Header */}
+      {/* =========================
+          HEADER
+      ========================= */}
+
       <div className="mb-6 flex items-center justify-between">
 
         <div>
@@ -192,7 +232,10 @@ onDelete={() => {
 
       </div>
 
-      {/* Table */}
+      {/* =========================
+          TABLE
+      ========================= */}
+
       <Table
         columns={columns}
         data={products}
@@ -200,25 +243,61 @@ onDelete={() => {
         emptyMessage="No products found."
       />
 
-      {/* Pagination */}
-   <Pagination
-  currentPage={page}
-  totalPages={data?.data?.pagination?.total_Page ?? 1}
-  onPageChange={setPage}
-/>
-<DeleteModal
-  isOpen={!!deleteProductItem}
-  productName={deleteProductItem?.name ?? ""}
-  isDeleting={deleteMutation.isPending}
-  onCancel={() => {
-    setDeleteProductItem(null);
-  }}
-  onConfirm={() => {
-    if (deleteProductItem) {
-      deleteMutation.mutate(deleteProductItem._id);
-    }
-  }}
-/>
+      {/* =========================
+          PAGINATION
+      ========================= */}
+
+      <Pagination
+        currentPage={page}
+        totalPages={
+          data?.data?.pagination?.total_Page ?? 1
+        }
+        onPageChange={setPage}
+      />
+
+      {/* =========================
+          DELETE MODAL
+      ========================= */}
+
+      <DeleteModal
+        isOpen={!!deleteProductItem}
+        productName={
+          deleteProductItem?.name ?? ""
+        }
+        isDeleting={deleteMutation.isPending}
+
+        onCancel={() => {
+          setDeleteProductItem(null);
+        }}
+
+        onConfirm={() => {
+          if (deleteProductItem) {
+            deleteMutation.mutate(
+              deleteProductItem._id
+            );
+          }
+        }}
+      />
+
+      {/* =========================
+          EDIT PRODUCT MODAL
+      ========================= */}
+
+      <AdminModal
+        isOpen={!!editProductId}
+        title="Edit Product"
+        maxWidth="max-w-5xl"
+        onClose={() => {
+          setEditProductId(null);
+        }}
+      >
+        <ProductForm
+          productId={editProductId!}
+          onSuccess={() => {
+            setEditProductId(null);
+          }}
+        />
+      </AdminModal>
 
     </section>
   );
